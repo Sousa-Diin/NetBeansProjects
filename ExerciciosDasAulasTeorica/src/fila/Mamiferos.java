@@ -1,4 +1,4 @@
-package lista;
+package fila;
 /** @author wildes */
 public class Mamiferos {
     private String nome;
