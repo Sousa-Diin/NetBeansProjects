@@ -4,3 +4,7 @@ Aula02/
 *.xml
 *.mf
 *.properties
+JogoTeste/build/classes/.netbeans_automatic_build
+JogoTeste/build/classes/.netbeans_update_resources
+*.class
+*.form
