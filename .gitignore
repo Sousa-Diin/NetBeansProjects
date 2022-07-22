@@ -8,3 +8,6 @@ JogoTeste/build/classes/.netbeans_automatic_build
 JogoTeste/build/classes/.netbeans_update_resources
 *.class
 *.form
+/BancoX/nbproject/private/
+/BancoX/build/
+/BancoX/dist/
