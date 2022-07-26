@@ -9,7 +9,7 @@ package simulador;
 public class TesteSimulador {
     public static void main(String[] args) {
         
-        Simulador simulador = new Simulador(2, 100);
+        Simulador simulador = new Simulador(1, 720);
         System.out.println("\tIniciando Simulação!!");
         simulador.simular();
     }

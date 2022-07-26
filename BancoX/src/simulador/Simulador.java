@@ -15,6 +15,7 @@ import java.util.Random;
  * @author <h2>Wildes Sousa</h2>
  * @version <b>v1.22-2</b>
  */
+
 public class Simulador {
     
     private int qtd_atendente;
@@ -37,6 +38,15 @@ public class Simulador {
         criarFilaCliente();
         criarListaAtendente();
     }
+
+    public Simulador() {
+        filaClientes = new LinkedList<>();
+        listaAtendentes = new ArrayList<>();
+        criarFilaCliente();
+        criarListaAtendente();
+    }
+    
+    
     
     /**
      * @return - <b> Fila de Clientes </b> <i> Criterio de parada </i> Ao entrar no loop da criação da 
@@ -76,14 +86,20 @@ public class Simulador {
             for(int atd = 0; atd < listaAtendentes.size();atd++){
                 if(listaAtendentes.get(atd).estaDisponivel(tempo_atual)){
                     if(!filaClientes.isEmpty()){
-                        if(filaClientes.peek().getTempo_chegada() <= tempo_atual){
-                            listaAtendentes.get(atd).atenderCliente(filaClientes.poll().getDuracao_atendimento());
-                            System.out.println("\nCaixa: " + atd);
+                        if(filaClientes.peek().getTempo_chegada() < tempo_atual ){
+                            listaAtendentes.get(atd).atenderCliente(filaClientes.poll().getDuracao_atendimento());                     
+                            String.format("\nCaixa: %d \nDuracão do atendimento: %d\n", atd,filaClientes.peek().getDuracao_atendimento());
                         }                     
                     }
                 }
             }
-            System.out.printf("Tempo atual: %d minutos;\nTamanho atual da fila: %d clientes\n\n",tempo_atual,filaClientes.size());
-        }      
+            if(!filaClientes.isEmpty()){
+              // System.out.printf("\nDuracão do atendimento: %d\n",filaClientes.peek().getDuracao_atendimento());
+                System.out.format("Tempo atual: %d minutos;\nTamanho atual da fila: %d clientes\n\n",tempo_atual,filaClientes.size());
+            }else{
+                System.out.format("\nFila vazia -> [Tempo atual : %d ]\n Fim da Simulacão\n",tempo_atual);
+            }
+        }  
+        System.out.format("FIM DA SIMULACÃO");
     }
 }
