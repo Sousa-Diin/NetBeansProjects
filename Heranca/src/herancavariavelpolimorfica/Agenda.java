@@ -24,8 +24,11 @@ public class Agenda {
         
         if(pessoa != null){
             contatos.remove(pessoa);
+            System.out.println("removido com sucesso.");
+        }else{
+            System.out.println("Entre com ID valido.");
         }
-        System.out.println("removido com sucesso.");
+        
     }
     
     private Pessoa buscarContato(String chave){
@@ -45,9 +48,9 @@ public class Agenda {
     }
     
     public void exibirContatos(){
-        String descricao = super.toString();
+        System.out.print("\n#########CONTATOS DA AGENDA#########\n");
         for(Pessoa p : contatos) {  
-            System.out.println(descricao += p.toString());
+            System.out.println( p.toString() + "\n");
         }
     }
     

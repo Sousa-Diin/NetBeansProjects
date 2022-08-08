@@ -27,7 +27,7 @@ public class PessoaJuridica extends Pessoa{
     @Override
     public String toString(){
         //String descricao = super.getDescricao();
-        return  "\nCnpj: " + getCnpj()+ "\nInscrição estadual: " + getIe();
+        return super.toString() + "\nCnpj: " + getCnpj()+ "\nInscrição estadual: " + getIe();
     }
 
     

@@ -26,7 +26,7 @@ public class PessoaFisica extends Pessoa{
     
     @Override
     public String toString(){
-        //String descricao = super.getDescricao();
-        return "\nCpf: " + getCpf() + "\nEstado Civil: " + getEstadoCivil();
+        String descricao = super.toString();
+        return descricao + "\nCpf: " + getCpf() + "\nEstado Civil: " + getEstadoCivil();
     }
 }
