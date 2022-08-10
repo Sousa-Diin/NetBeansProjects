@@ -41,9 +41,11 @@ public abstract class Item {
     
     public String getDescricao(){
         String saida;
-        if (getTenho_copia())
+        if (getTenho_copia()){
             saida = "sim";
-        saida = "não";
+        }else{
+          saida = "não";  
+        }
         
         return "Titulo: " + getTitulo() + "\n" + "Tempo de reproducão: "
                 + getTempo_reproducao() + "\n" + "Tem Cópia: " + saida + "\n"

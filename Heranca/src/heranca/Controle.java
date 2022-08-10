@@ -23,16 +23,30 @@ class Controle {
         System.out.println("Entre com [artista/diretor] para remocão: ");
         Scanner sc = new Scanner(System.in);
         String resposta = sc.nextLine();
+        
+        itens.remove(buscarItem(resposta));
+        
+    }
+    public Item buscarItem(String id){
         for(Item i : itens){
-            itens.remove(i.getTitulo().equals(resposta));
+            if(i instanceof Cd){
+                if(((Cd)i).getArtista().equals(id)){
+                    return i;
+                }
+            }else if(i instanceof DVD){
+                if (((DVD)i).getDiretor().equals(id)){
+                    return i;
+                }
+            }
         }
+        return null;
     }
     
-    public String listarItem(){
-        String saida ="";
+    public void listarItem(){
+       // String saida ="";
         for(Item i : itens){
-            saida = i.getDescricao();
+            System.out.println(i.getDescricao());
         }
-        return saida + "\n Tamanho da lista: " + itens.size() ;
+       // return saida + "\n Tamanho da lista: " + itens.size() ;
     }
 }

@@ -25,11 +25,38 @@ public class Cd extends Item {
         return numero_faixas;
     }
 
+    /**
+     * 
+     * @param obj
+     * @return boolean 
+     */
+    @Override
+    public boolean equals (Object obj){
+        if(this == obj){
+            return true;
+        }
+        else if (!(obj instanceof Cd)){
+            return false;
+        }
+        else{
+            Cd objAcomparar = (Cd)obj;
+            return super.getTitulo().equals(objAcomparar.getTitulo()) &&  numero_faixas == objAcomparar.getNumero_faixas()
+                    && artista.equals(objAcomparar.getArtista()) && super.getTempo_reproducao() == objAcomparar.getTempo_reproducao();
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        int hash = 27;
+        hash = 32* hash + numero_faixas + super.getTempo_reproducao()
+                + artista.hashCode() + super.getTitulo().hashCode();
+        return hash;
+    }
     
     @Override
     public String getDescricao(){
-        String saida = super.getDescricao();
-        return saida += "Artista: " + getArtista() + "\n" + "Numero de faixas: "
+        
+        return super.getDescricao() + "Artista: " + getArtista() + "\n" + "Numero de faixas: "
                 + getNumero_faixas() + "\n";
     }
 }

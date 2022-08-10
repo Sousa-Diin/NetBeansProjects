@@ -22,8 +22,8 @@ public class DVD extends Item {
     
     @Override
     public String getDescricao(){
-        String saida = super.getDescricao();
-        return saida += "Diretor: " + getDiretor() + "\n";
+        
+        return super.getDescricao() + "Diretor: " + getDiretor() + "\n";
     }
     
 }

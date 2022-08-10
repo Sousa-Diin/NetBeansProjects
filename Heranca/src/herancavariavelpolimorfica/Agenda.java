@@ -15,7 +15,11 @@ public class Agenda {
     }
     
     public void adicionarContato(Pessoa p){
-        contatos.add(p);
+        if(!contatos.equals(p)){
+            contatos.add(p);
+        }else{
+            System.out.println("Contato existente.");
+        }
     }
     
     public void removerContato(String chave){
@@ -46,6 +50,9 @@ public class Agenda {
         }
         return null;
     }
+    
+    
+    
     
     public void exibirContatos(){
         System.out.print("\n#########CONTATOS DA AGENDA#########\n");
