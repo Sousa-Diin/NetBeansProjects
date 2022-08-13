@@ -41,29 +41,52 @@ public class Jogo
      */
     private void criarAmbientes()
     {
-        Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
+        Ambiente entrada_principal, salao_principal, camera_secreta, 
+                torre_das_escadarias, grifinoria, sala_precisa, lufa_lufa,
+                corvinal, sonserina, banheiro_murta;
       
+        /**
+         * Ambientes do Jogo: 
+
+            Entrada Principal
+            Salão Principal 
+            Câmera Secreta
+            Sala Precisa
+            Torre das Escadarias
+            Casa Grifinória
+            Casa Lufa-lufa
+            Casa Corvinal
+            Casa Sonserina
+            Banheiro murta
+
+         */
         // cria os ambientes
-        fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
-        anfiteatro = new Ambiente("no anfiteatro");
-        cantina = new Ambiente("na cantina do campus");
-        laboratorio = new Ambiente("no laboratorio de computacao");
-        escritorio = new Ambiente("na sala de administracao dos computadores");
+        entrada_principal = new Ambiente("na entrada principal da escola de hogwarts");
+        salao_principal = new Ambiente("no salão principal");
+        camera_secreta = new Ambiente("na câmara secreta");
+        torre_das_escadarias = new Ambiente("na torre das escadarias");
+        grifinoria = new Ambiente("na casa grifinória");
+        sala_precisa = new Ambiente("na sala precisa");
+        grifinoria = new Ambiente("na casa grifinória");
+        lufa_lufa = new Ambiente("na casa lufa-lufa");
+        corvinal = new Ambiente("na casa corvinal");
+        banheiro_murta = new Ambiente("no banheiro da murta");
+        
         
         // inicializa as saidas dos ambientes
-        fora.ajustarSaidas("oeste", anfiteatro);
-        fora.ajustarSaidas("norte", laboratorio);
-        fora.ajustarSaidas("sul", cantina);
+        entrada_principal.ajustarSaidas("oeste", salao_principal);
+        entrada_principal.ajustarSaidas("norte", torre_das_escadarias);
+        entrada_principal.ajustarSaidas("sul", camera_secreta);
         
-        anfiteatro.ajustarSaidas("norte", fora);
-        cantina.ajustarSaidas("norte", fora);
+        salao_principal.ajustarSaidas("norte", entrada_principal);
+        camera_secreta.ajustarSaidas("norte", entrada_principal);
         
-        laboratorio.ajustarSaidas("oeste",fora);
-        laboratorio.ajustarSaidas("suldeste", escritorio);
+        torre_das_escadarias.ajustarSaidas("oeste",entrada_principal);
+        torre_das_escadarias.ajustarSaidas("suldeste", grifinoria);
         
-        escritorio.ajustarSaidas("sul", laboratorio);
+        grifinoria.ajustarSaidas("sul", torre_das_escadarias);
 
-        ambienteAtual = fora;  // o jogo comeca do lado de fora
+        ambienteAtual = entrada_principal;  // o jogo comeca do lado de entrada_principal
     }
 
     /**
@@ -166,8 +189,8 @@ public class Jogo
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos pra onde ir...
             System.out.println("Ir pra onde?");
-            return;
-        }
+           // return; /* funciona como se fosse o `else`.
+        }else{
 
         String direcao = comando.getSegundaPalavra();
 
@@ -208,6 +231,7 @@ public class Jogo
                 System.out.print("oeste ");
             }
             System.out.println();
+        }
         }
     }
 
