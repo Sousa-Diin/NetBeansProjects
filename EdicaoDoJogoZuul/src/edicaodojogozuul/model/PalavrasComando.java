@@ -16,15 +16,19 @@ public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda"
+        "ir", "sair", "ajuda", "observar"
     };
 
     /**
      * Construtor - inicializa as palavras de comando.
      */
-    public PalavrasComando()
+    protected String PalavrasComando()
     {
-        // nada a fazer no momento...
+        String comandos = "";
+        for(String cmd : comandosValidos){
+            comandos += cmd;
+        }
+        return comandos + " ";
     }
 
     /**
@@ -32,7 +36,7 @@ public class PalavrasComando
      * @return true se a string dada eh um comando valido,
      * false se nao eh.
      */
-    public boolean ehComando(String umaString)
+    protected boolean ehComando(String umaString)
     {
         for(int i = 0; i < comandosValidos.length; i++) {
             if(comandosValidos[i].equals(umaString))

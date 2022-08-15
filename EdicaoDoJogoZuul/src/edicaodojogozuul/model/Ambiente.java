@@ -22,7 +22,7 @@ import java.util.HashMap;
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
  */
-public class Ambiente 
+public abstract class Ambiente 
 {
     private String descricao;
     private HashMap<String,Ambiente> saidas;
@@ -71,4 +71,11 @@ public class Ambiente
         return descricao;
     }
 
+    public String getSaidas(){
+        String textoSaida = " ";
+        for(String direcao : saidas.keySet()){
+            textoSaida += direcao + " ";
+        }
+        return textoSaida;
+    }
 }

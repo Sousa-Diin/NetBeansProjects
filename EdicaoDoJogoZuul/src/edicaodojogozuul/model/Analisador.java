@@ -38,6 +38,11 @@ public class Analisador
         entrada = new Scanner(System.in);
     }
 
+    public PalavrasComando getPalavrasDeComando() {
+        return palavrasDeComando;
+    }
+
+    
     /**
      * @return O proximo comando do usuario
      */
