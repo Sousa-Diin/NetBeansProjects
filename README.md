@@ -17,7 +17,9 @@
         <li>Investimentos</li>
         <li>HoraDoSistema</li>
         <li>Trabalho da Disc.TPAE - JOGO <a href="https://github.com/Sousa-Diin/NetBeansProjects/tree/main/EdicaoDoJogoZuul/src/edicaodojogozuul"/></li>
-        <img width="50%" src="https://github.com/Sousa-Diin/NetBeansProjects/blob/main/EdicaoDoJogoZuul/src/edicaodojogozuul/img/Captura%20de%20tela%20de%202022-08-13%2017-08-16.png" alt="foto-jogo" target="_blank"/>
-        <img width="50%" alt="diagrama de classes - UML" src="https://github.com/Sousa-Diin/NetBeansProjects/blob/main/EdicaoDoJogoZuul/src/edicaodojogozuul/UML/diagrama%20de%20classe.png" target="blank"
+        <img width="45%" src="https://github.com/Sousa-Diin/NetBeansProjects/blob/main/EdicaoDoJogoZuul/src/edicaodojogozuul/img/Captura%20de%20tela%20de%202022-08-13%2017-08-16.png" alt="foto-jogo" target="_blank"/>
+        
     </ul>
+    ##
+    <img width="40%" alt="diagrama de classes - UML" src="https://github.com/Sousa-Diin/NetBeansProjects/blob/main/EdicaoDoJogoZuul/src/edicaodojogozuul/UML/diagrama%20de%20classe.png" target="blank"
 
