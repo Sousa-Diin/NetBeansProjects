@@ -13,12 +13,11 @@ public class CameraSecreta extends Ambiente implements Arena {
     private int vidaValdemor; // cria um novo jogador
     private SimularLuta arena;
 
-    public CameraSecreta(int vidajogador, String descricao) {
-        super(descricao);
+    public CameraSecreta(int vidajogador, String descricao,String id) {
+        super(descricao, id);
         vidaValdemor = vidajogador;
         arena = new SimularLuta(vidajogador);
-    }
-   
+    }   
     
 
     @Override
@@ -31,4 +30,8 @@ public class CameraSecreta extends Ambiente implements Arena {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    @Override
+    public String getDescricao(){
+        return super.getDescricao() + "\nLorde Valdemor está aqui ";
+    }
 }

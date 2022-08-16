@@ -9,9 +9,11 @@ import edicaodojogozuul.model.Ambiente;
  */
 public class BanheiroMurta extends Ambiente{
 
-    public BanheiroMurta(String descricao) {
-        super(descricao);
+    public BanheiroMurta(String descricao, String id) {
+        super(descricao, id);
     }
+
+   
     
     
 }

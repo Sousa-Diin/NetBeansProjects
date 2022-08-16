@@ -9,10 +9,9 @@ import edicaodojogozuul.model.Ambiente;
  */
 public class SalaoPrincipal extends Ambiente{
 
-    public SalaoPrincipal(String descricao) {
-        super(descricao);
+    public SalaoPrincipal(String descricao, String id) {
+        super(descricao, id);
     }
 
-   
-    
+     
 }

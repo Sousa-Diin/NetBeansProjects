@@ -9,8 +9,9 @@ import edicaodojogozuul.model.Ambiente;
  */
 public class QuintalPrincipal extends Ambiente{
 
-    public QuintalPrincipal(String descricao) {
-        super(descricao);
+    public QuintalPrincipal(String descricao, String id) {
+        super(descricao, id);
     }
+
     
 }

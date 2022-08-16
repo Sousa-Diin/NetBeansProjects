@@ -11,11 +11,15 @@ import edicaodojogozuul.model.Ambiente;
 public class EntradaPrincipal extends Ambiente{
     private boolean varinha;
 
-    public EntradaPrincipal(String descricao, boolean varinha) {
-        super(descricao);
-        this.varinha = varinha; 
+    public EntradaPrincipal(boolean varinha, String descricao, String id) {
+        super(descricao, id);
+          this.varinha = varinha;
     }
+
     
+    public String descricao(){
+        return super.getDescricao() + String.format("Varinha das varinhas\nDisponivél: %b", varinha);
+    }
     
     
 }

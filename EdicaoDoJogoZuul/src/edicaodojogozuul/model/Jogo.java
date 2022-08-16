@@ -38,6 +38,7 @@ public class Jogo
 {
     private Analisador analisador;
     private Ambiente ambienteAtual;
+    private boolean fim;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -46,6 +47,11 @@ public class Jogo
     {
         criarAmbientes();
         analisador = new Analisador();
+        fim = false;
+    }
+
+    public String getAmbienteAtual() {
+        return ambienteAtual.getDescricao();
     }
 
     /**
@@ -73,17 +79,17 @@ public class Jogo
 
          */
         // cria os ambientes
-        entrada_principal = new EntradaPrincipal("na entrada principal da escola de hogwarts",true);
-        salao_principal = new SalaoPrincipal("no salão principal");
-        camera_secreta = new CameraSecreta(3,"na câmara secreta");
-        torre_das_escadarias = new TorreDasEscadaria("na torre das escadarias");
-        grifinoria = new CasaGrifinoria("na casa grifinória");
-        sala_precisa = new SalaPrecisa("na sala precisa");
-        sonserina = new CasaSonserina("na casa sonserina");
-        lufa_lufa = new CasaLufaLufa("na casa lufa-lufa");
-        corvinal = new CasaCorvinal("na casa corvinal");
-        banheiro_murta = new BanheiroMurta("no banheiro da murta");
-        quintal_pricinpal = new QuintalPrincipal("no quintal principal, entre para a escola pra continuar.");
+        entrada_principal = new EntradaPrincipal(true,"na entrada principal da escola de hogwarts","ep");
+        salao_principal = new SalaoPrincipal("no salão principal","spp");
+        camera_secreta = new CameraSecreta(3,"na câmara secreta","cs");
+        torre_das_escadarias = new TorreDasEscadaria("na torre das escadarias","te");
+        grifinoria = new CasaGrifinoria("na casa grifinória", "cg");
+        sala_precisa = new SalaPrecisa("na sala precisa", "sp");
+        sonserina = new CasaSonserina("na casa sonserina", "css");
+        lufa_lufa = new CasaLufaLufa("na casa lufa-lufa", "cll");
+        corvinal = new CasaCorvinal("na casa corvinal", "cc");
+        banheiro_murta = new BanheiroMurta("no banheiro da murta", "bm");
+        quintal_pricinpal = new QuintalPrincipal("no quintal principal, entre para a escola pra continuar.", "qp");
         
         
         // inicializa as saidas dos ambientes
@@ -112,7 +118,7 @@ public class Jogo
         sonserina.ajustarSaidas("leste", banheiro_murta);
         
         sala_precisa.ajustarSaidas("oeste", corvinal);
-        sala_precisa.ajustarSaidas("sul", banheiro_murta); // possivel mudança p/tornar o jogo mais desafiador
+        sala_precisa.ajustarSaidas("sul", banheiro_murta); // possivel mudança a/tornar o jogo mais desafiador
         
         banheiro_murta.ajustarSaidas("norte", sala_precisa);
         banheiro_murta.ajustarSaidas("oeste", sonserina);
@@ -135,7 +141,7 @@ public class Jogo
         // comandos e os executamos ate o jogo terminar.
                 
         boolean terminado = false;
-        while (! terminado) {
+        while ((! terminado) && !fim) {
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
@@ -153,10 +159,7 @@ public class Jogo
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
         
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());
-    
-       
-        System.out.println("Saidas: " + ambienteAtual.getSaidas());
+        imprimirLocalizacaoAtual();
     }
 
     /**
@@ -184,12 +187,24 @@ public class Jogo
             querSair = sair(comando);
         }
         else if(palavraDeComando.equals("observar")){
-            ambienteAtual.getDescricao(); // mostrar tudo que tem no ambiente
+            observar();
         }
 
         return querSair;
     }
+    
+    private void observar(){
+        System.out.println("você esta " + getAmbienteAtual());// mostrar tudo que tem no ambiente
+        // usar metodo instaceof
+        if(buscarAmbiente(ambienteAtual.getId()) !=null){
+           System.out.println("Voce esta " + ambienteAtual.getDescricao());
+        }
+    }
 
+    private void imprimirLocalizacaoAtual(){
+        System.out.println("Voce esta " + ambienteAtual.getDescricao());       
+        System.out.println("Saidas: " + ambienteAtual.getSaidas());
+    }
     // Implementacoes dos comandos do usuario
 
     /**
@@ -202,9 +217,7 @@ public class Jogo
         System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
         System.out.println("por hogwarts.");
         System.out.println();
-        System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
-        System.out.println(analisador.getPalavrasDeComando());
+        System.out.printf("Suas palavras de comando sao: \n%s\n",analisador.getPalavrasDeComando().PalavrasComando());
     }
 
     /** 
@@ -219,10 +232,25 @@ public class Jogo
            // return; /* funciona como se fosse o `else`.
         }else{
 
+        
         String direcao = comando.getSegundaPalavra();
+        Ambiente proximoAmbiente = null;
+        if(ambienteAtual.getAmbiente(direcao).getId().equals("cs")){
+            SimularLuta arena = new SimularLuta(10);
+            
+            String fim = arena.rounds(3);
+            if(fim.equals("Jogador")){
+                System.out.println("Harry você venceu Valdemor.\nParabéns para concluir o jogo vá para o Quintal Principal");
+                proximoAmbiente = ambienteAtual.getAmbiente("norte");
+            }
+            else{
+                System.out.println("Que pena você perdeu :(");
+                this.fim = true;
+            }
+        }
 
         // Tenta sair do ambiente atual
-        Ambiente proximoAmbiente = null;
+        
         if(direcao.equals("norte")) {
             proximoAmbiente = ambienteAtual.getAmbiente("norte");
         }
@@ -248,33 +276,27 @@ public class Jogo
         }
         else {
             ambienteAtual = proximoAmbiente;
-            
-            System.out.println("Voce esta " + ambienteAtual.getDescricao());
-            
-            System.out.print("Saidas: ");
-            if(ambienteAtual.getAmbiente("norte") != null) {
-                System.out.print("norte ");
-            }
-            if(ambienteAtual.getAmbiente("leste") != null) {
-                System.out.print("leste ");
-            }
-            if(ambienteAtual.getAmbiente("sul") != null) {
-                System.out.print("sul ");
-            }
-            if(ambienteAtual.getAmbiente("oeste") != null) {
-                System.out.print("oeste ");
-            }
-            /**
-             * Aqui tem possibilidade de omitir a saida 
-             * dai a Casa Sonserina ficaria escondida podendo entrar apenas pelo 
-             * banheiro da murta e sair pelo lado oeste Salão Principal
-             */
-            if(ambienteAtual.getAmbiente("nordeste")!= null){
-                System.out.println("nordeste");
-            }
+                 
+            imprimirLocalizacaoAtual();
             System.out.println();
         }
         }
+    }
+    
+    private Ambiente buscarAmbiente(String id){
+        for(Ambiente a  : ambienteAtual.getAmbiente()){
+           if(a instanceof SalaoPrincipal){
+               if(((SalaoPrincipal) a).getId().equals(id)){
+                   return a;
+               }
+           }else if (a instanceof CameraSecreta){
+               if(((CameraSecreta) a).getId().equals(id))
+               return a;
+           }
+            
+        
+        }
+        return null;
     }
 
     /** 

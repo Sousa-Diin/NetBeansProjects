@@ -9,9 +9,9 @@ import edicaodojogozuul.model.Ambiente;
  */
 public class SalaPrecisa extends Ambiente{
 
-    public SalaPrecisa(String descricao) {
-        super(descricao);
+    public SalaPrecisa(String descricao, String id) {
+        super(descricao, id);
     }
-    
-    
+
+   
 }

@@ -1,6 +1,8 @@
 
 package edicaodojogozuul.model;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -26,12 +28,7 @@ public abstract class Ambiente
 {
     private String descricao;
     private HashMap<String,Ambiente> saidas;
-    /*private Ambiente saidaNorte;
-    private Ambiente saidaSul;
-    private Ambiente saidaLeste;
-    private Ambiente saidaOeste;/*
-    
-    */
+    private String id;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -42,15 +39,20 @@ public abstract class Ambiente
      * "um jardim aberto".
      * @param descricao A descricao do ambiente.
      */
-    public Ambiente(String descricao) 
+    public Ambiente(String descricao, String id) 
     {
         this.descricao = descricao;
+        this.id = id;
         saidas = new HashMap<>();
     }
     
-    public Ambiente getAmbiente(String direcao){
+    protected Ambiente getAmbiente(String direcao){
         return saidas.get(direcao);
     }    
+
+    public String getId() {
+        return id;
+    }
     
 
     /**
@@ -59,23 +61,26 @@ public abstract class Ambiente
      * @param ambiente 
      * @param direcao 
      */
-    public void ajustarSaidas(String direcao, Ambiente ambiente) {
+    protected void ajustarSaidas(String direcao, Ambiente ambiente) {
         saidas.put(direcao, ambiente);
     }
 
     /**
      * @return A descricao do ambiente.
      */
-    public String getDescricao()
+    protected String getDescricao()
     {
         return descricao;
     }
 
-    public String getSaidas(){
+    protected String getSaidas(){
         String textoSaida = " ";
         for(String direcao : saidas.keySet()){
             textoSaida += direcao + " ";
         }
         return textoSaida;
+    }
+    protected ArrayList<Ambiente> getAmbiente(){
+        return new ArrayList<>(saidas.values());
     }
 }

@@ -9,8 +9,10 @@ import edicaodojogozuul.model.Ambiente;
  */
 public class CasaCorvinal extends Ambiente{
 
-    public CasaCorvinal(String descricao) {
-        super(descricao);
+    public CasaCorvinal(String descricao, String id) {
+        super(descricao, id);
     }
+
+   
     
 }
