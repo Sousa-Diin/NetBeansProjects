@@ -1,17 +1,9 @@
 
 package edicaodojogozuul.model;
 
-import edicaodojogozuul.model.ambientes.BanheiroMurta;
-import edicaodojogozuul.model.ambientes.CameraSecreta;
-import edicaodojogozuul.model.ambientes.CasaCorvinal;
-import edicaodojogozuul.model.ambientes.CasaGrifinoria;
-import edicaodojogozuul.model.ambientes.CasaLufaLufa;
-import edicaodojogozuul.model.ambientes.CasaSonserina;
-import edicaodojogozuul.model.ambientes.EntradaPrincipal;
-import edicaodojogozuul.model.ambientes.QuintalPrincipal;
-import edicaodojogozuul.model.ambientes.SalaPrecisa;
-import edicaodojogozuul.model.ambientes.SalaoPrincipal;
-import edicaodojogozuul.model.ambientes.TorreDasEscadaria;
+import java.util.Random;
+import java.util.Scanner;
+
 
 /**
  *
@@ -38,7 +30,12 @@ public class Jogo
 {
     private Analisador analisador;
     private Ambiente ambienteAtual;
+    private Jogador harry;
     private boolean fim;
+    /**
+     * Atributo responsavél pela duracão da simulacão
+     */
+    private int tempo_luta;    
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -51,7 +48,8 @@ public class Jogo
     }
 
     public String getAmbienteAtual() {
-        return ambienteAtual.getDescricao();
+        return ambienteAtual.getDescricao() + "\n";
+        
     }
 
     /**
@@ -79,17 +77,17 @@ public class Jogo
 
          */
         // cria os ambientes
-        entrada_principal = new EntradaPrincipal(true,"na entrada principal da escola de hogwarts","ep");
-        salao_principal = new SalaoPrincipal("no salão principal","spp");
-        camera_secreta = new CameraSecreta(3,"na câmara secreta","cs");
-        torre_das_escadarias = new TorreDasEscadaria("na torre das escadarias","te");
-        grifinoria = new CasaGrifinoria("na casa grifinória", "cg");
-        sala_precisa = new SalaPrecisa("na sala precisa", "sp");
-        sonserina = new CasaSonserina("na casa sonserina", "css");
-        lufa_lufa = new CasaLufaLufa("na casa lufa-lufa", "cll");
-        corvinal = new CasaCorvinal("na casa corvinal", "cc");
-        banheiro_murta = new BanheiroMurta("no banheiro da murta", "bm");
-        quintal_pricinpal = new QuintalPrincipal("no quintal principal, entre para a escola pra continuar.", "qp");
+        entrada_principal = new AmbienteNeutro("na entrada principal da escola de hogwarts","an");
+        salao_principal = new AmbienteComum("no salão principal","ac");
+        camera_secreta = new AmbienteEspecial(3,"na câmara secreta","ae");
+        torre_das_escadarias = new AmbienteNeutro("na torre das escadarias","an");
+        grifinoria = new AmbienteComum("na casa grifinória", "ac");
+        sala_precisa = new AmbienteNeutro("na sala precisa", "an");
+        sonserina = new AmbienteComum("na casa sonserina", "ac");
+        lufa_lufa = new AmbienteNeutro("na casa lufa-lufa", "an");
+        corvinal = new AmbienteComum("na casa corvinal", "ac");
+        banheiro_murta = new AmbienteComum("no banheiro da murta", "ac");
+        quintal_pricinpal = new AmbienteNeutro("no quintal principal, entre para a escola pra continuar.", "an");
         
         
         // inicializa as saidas dos ambientes
@@ -193,16 +191,24 @@ public class Jogo
         return querSair;
     }
     
+    /**
+     * @return - String de tudo que há no abiente
+     */
     private void observar(){
-        System.out.println("você esta " + getAmbienteAtual());// mostrar tudo que tem no ambiente
+        Ambiente obsA = buscarAmbiente(ambienteAtual.getId());
+        
         // usar metodo instaceof
-        if(buscarAmbiente(ambienteAtual.getId()) !=null){
-           System.out.println("Voce esta " + ambienteAtual.getDescricao());
+        if(obsA !=null){
+           System.out.println(obsA);// mostrar tudo que tem no ambiente
+        }
+        else{
+            System.out.println("Ambiente vazio.");
         }
     }
 
     private void imprimirLocalizacaoAtual(){
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());       
+        System.out.println("Voce esta " + ambienteAtual.getDescricao());
+        /*System.out.println("Inimigos: " + ambienteAtual.get);*/
         System.out.println("Saidas: " + ambienteAtual.getSaidas());
     }
     // Implementacoes dos comandos do usuario
@@ -235,11 +241,12 @@ public class Jogo
         
         String direcao = comando.getSegundaPalavra();
         Ambiente proximoAmbiente = null;
-        if(ambienteAtual.getAmbiente(direcao).getId().equals("cs")){
-            SimularLuta arena = new SimularLuta(10);
+        
+        if(ambienteAtual.getAmbiente(direcao).getId().equals("ae")){
             
-            String fim = arena.rounds(3);
-            if(fim.equals("Jogador")){
+            ambienteAtual = buscarAmbiente("ae");
+            String vencedor = rounds(3);
+            if(vencedor.equals("Jogador")){
                 System.out.println("Harry você venceu Valdemor.\nParabéns para concluir o jogo vá para o Quintal Principal");
                 proximoAmbiente = ambienteAtual.getAmbiente("norte");
             }
@@ -283,14 +290,19 @@ public class Jogo
         }
     }
     
+        /**
+     * 
+     * @param id
+     * @return Ambiente Especial ou Ambiente Comum
+     */
     private Ambiente buscarAmbiente(String id){
         for(Ambiente a  : ambienteAtual.getAmbiente()){
-           if(a instanceof SalaoPrincipal){
-               if(((SalaoPrincipal) a).getId().equals(id)){
+           if(a instanceof AmbienteComum){
+               if(((AmbienteComum) a).getId().equals(id)){
                    return a;
                }
-           }else if (a instanceof CameraSecreta){
-               if(((CameraSecreta) a).getId().equals(id))
+           }else if (a instanceof AmbienteEspecial){
+               if(((AmbienteEspecial) a).getId().equals(id))
                return a;
            }
             
@@ -298,6 +310,90 @@ public class Jogo
         }
         return null;
     }
+     /**
+     * 
+     * @return String - retorna o [nome do vencedor]
+     * gera uma quantidade de socos aleatorio para cada lutador 
+     * com base em um detenminado tempo de luta passado no construtor da classe
+     * e ao final da simulacão retorna qual lutador socou mais.
+     */
+    
+    private String simularLuta(){
+        
+       Random socos = new Random();
+       
+       int socosJogador = 0; 
+       int socosAdversario = 0;
+       String ganhador = "";
+       
+       int inicio = 0;
+       while(inicio < tempo_luta ){
+           socosJogador += socos.nextInt(8)+1;
+           socosAdversario += socos.nextInt(8)+1;
+           
+           ganhador = (socosJogador > socosAdversario) ? "Jogador" : "Maquina" ;
+           inicio++;
+       }
+        return ganhador;
+    }
+    /**
+     * 
+     * @param vidas
+     * @return String - retorna o resultado final de cada round (nome do ganhador) -> Jogador or Maquina
+     * @@code if (qtdVitoriaJogador > vitoriaMaquina) {return jogador;}
+     */
+    
+    public String rounds(int vidas){
+        
+        String vencedorRounds;
+        String winner;
+        String ent;
+        
+        int rounds = vidas;
+        int r= 1;
+        
+        int jogador = 0;
+        int maquina = 0;
+        
+        Scanner sc = new Scanner(System.in);
+        
+        while(rounds > 0 ){
+            System.out.println("Time: " + rounds);
+            System.out.println("Round " + r++);
+            System.out.print("\nPara lutar digite [L]");
+            System.out.print("\nLutar -> ");
+            ent = sc.nextLine();
+            
+            switch(ent){
+                case "l":
+                case "L":
+                        /**
+                         * @return - String (vencedor)
+                         */
+                        vencedorRounds = simularLuta();
+                        
+                        if (vencedorRounds.equals("Jogador")){
+                            jogador++; //contabiliza a quanidade de rounds ganhos
+                        }
+                        else{
+                            maquina++;
+                        }
+                        break;
+                default:
+                    System.out.println("Comando invalido...\n\tDa proxima vez tente l ou L. ");
+                    vencedorRounds = "aguandando comando válido\n";
+                    rounds++; // caso o comando seja invalido retorna a tentativa anterior
+                    r--;// caso o comando seja invalido retorna ao round atual
+            }
+            
+            System.out.printf("####Placar####\nJ: %d \t|\tM: %d\n", jogador, maquina);// vitorias dos lutadores
+            
+            System.out.println("Winner -> " + vencedorRounds + "\n"); //Se o comando for válido exibe o vencedor do round atual
+            rounds--;
+        }
+        winner = jogador > maquina ? "Jogador" : "Maquina"; // retorna o vencedor por meio das qts de conquistas(rounds)
+        return  winner;
+    }    
 
     /** 
      * "Sair" foi digitado. Verifica o resto do comando pra ver
