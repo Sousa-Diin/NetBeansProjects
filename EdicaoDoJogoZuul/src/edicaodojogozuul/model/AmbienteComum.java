@@ -12,10 +12,10 @@ public class AmbienteComum extends Ambiente{
     private int inimigos;
     private boolean varinha;
 
-    public AmbienteComum(String descricao, String id) {
+    public AmbienteComum(String descricao, String id,boolean sorteio) {
         super(descricao, id);
         criarInimigos();
-        varinha = false;
+        varinha = sorteio;
         
     }
     
@@ -34,7 +34,7 @@ public class AmbienteComum extends Ambiente{
 
     @Override
     public String toString() {
-        return "\nVocê esta "+ super.getDescricao() + "\nInimigos: " + getInimigos() + "\nVarinha: " + getVarinha() + '\n';
+        return "\nVocê esta "+ super.getDescricao() + "\nQuatidade de inimigos: " + getInimigos() + "\nContem a varinha: " + getVarinha() + '\n';
     }
     
     

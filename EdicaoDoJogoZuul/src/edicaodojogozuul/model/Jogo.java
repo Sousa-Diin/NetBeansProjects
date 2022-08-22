@@ -29,9 +29,10 @@ import java.util.Scanner;
 public class Jogo 
 {
     private Analisador analisador;
-    private Ambiente ambienteAtual;
+    private Ambiente ambienteAtual,  proximoAmbiente = null;
     private Jogador harry;
     private boolean fim;
+    private String cmd;
     /**
      * Atributo responsavél pela duracão da simulacão
      */
@@ -45,6 +46,7 @@ public class Jogo
         criarAmbientes();
         analisador = new Analisador();
         fim = false;
+        cmd = "";
     }
 
     public String getAmbienteAtual() {
@@ -60,41 +62,58 @@ public class Jogo
         Ambiente entrada_principal, salao_principal, camera_secreta, 
                 torre_das_escadarias, grifinoria, sala_precisa, lufa_lufa,
                 corvinal, sonserina, banheiro_murta , quintal_pricinpal;
-      
         /**
-         * Ambientes do Jogo: 
-
-            Entrada Principal
-            Salão Principal 
-            Câmera Secreta
-            Sala Precisa
-            Torre das Escadarias
-            Casa Grifinória
-            Casa Lufa-lufa
-            Casa Corvinal
-            Casa Sonserina
-            Banheiro murta
-
+         * Defini em qual ambiente vai estar a varinha
          */
+        boolean 
+                amb0 = false,
+                amb1 = false,
+                amb2 = false,
+                amb3 = false,
+                amb4 = false;
+        switch(sortearVarinha()){
+            case 0 : 
+                amb0 = true;
+                break;
+            case 1 : 
+                amb1 = true;
+                break;
+            case 2 : 
+                amb2 = true;
+                break;
+            case 3 : 
+                amb3 = true;
+                break;
+            case 4 : 
+                amb4 = true;
+                break;
+        }
+      
         // cria os ambientes
         entrada_principal = new AmbienteNeutro("na entrada principal da escola de hogwarts","an");
-        salao_principal = new AmbienteComum("no salão principal","ac");
+        salao_principal = new AmbienteComum("no salão principal","ac",amb0);
         camera_secreta = new AmbienteEspecial(3,"na câmara secreta","ae");
         torre_das_escadarias = new AmbienteNeutro("na torre das escadarias","an");
-        grifinoria = new AmbienteComum("na casa grifinória", "ac");
+        grifinoria = new AmbienteComum("na casa grifinória", "ac",amb3);
         sala_precisa = new AmbienteNeutro("na sala precisa", "an");
-        sonserina = new AmbienteComum("na casa sonserina", "ac");
+        sonserina = new AmbienteComum("na casa sonserina", "ac", amb4);
         lufa_lufa = new AmbienteNeutro("na casa lufa-lufa", "an");
-        corvinal = new AmbienteComum("na casa corvinal", "ac");
-        banheiro_murta = new AmbienteComum("no banheiro da murta", "ac");
+        corvinal = new AmbienteComum("na casa corvinal", "ac", amb1);
+        banheiro_murta = new AmbienteComum("no banheiro da murta", "ac", amb2);
         quintal_pricinpal = new AmbienteNeutro("no quintal principal, entre para a escola pra continuar.", "an");
         
         
         // inicializa as saidas dos ambientes
         quintal_pricinpal.ajustarSaidas("leste",entrada_principal);
+        /*quintal_pricinpal.ajustarSaidas("oeste",null);
+        quintal_pricinpal.ajustarSaidas("norte",null);
+        quintal_pricinpal.ajustarSaidas("sul",null);*/
+
         
         entrada_principal.ajustarSaidas("oeste", quintal_pricinpal);
         entrada_principal.ajustarSaidas("leste", torre_das_escadarias);
+        /*entrada_principal.ajustarSaidas("norte", null);
+        entrada_principal.ajustarSaidas("sul", null);*/
         
         torre_das_escadarias.ajustarSaidas("oeste",entrada_principal);
         torre_das_escadarias.ajustarSaidas("sul", salao_principal);
@@ -187,6 +206,15 @@ public class Jogo
         else if(palavraDeComando.equals("observar")){
             observar();
         }
+        else if(palavraDeComando.equals("pegar")){
+            pegarItem();
+        }
+        else if(palavraDeComando.equals("usar")){
+            usarItem();
+        }
+        else if(palavraDeComando.equals("lutar")){
+            cmd = "lutar";
+        }
 
         return querSair;
     }
@@ -195,11 +223,14 @@ public class Jogo
      * @return - String de tudo que há no abiente
      */
     private void observar(){
-        Ambiente obsA = buscarAmbiente(ambienteAtual.getId());
-        
-        // usar metodo instaceof
-        if(obsA !=null){
-           System.out.println(obsA);// mostrar tudo que tem no ambiente
+         
+        proximoAmbiente = ambienteAtual;
+        // usar metodo instaceo
+        if(proximoAmbiente.getId().equals("ac")){
+           System.out.println(proximoAmbiente);// mostrar tudo que tem no ambiente comum
+        }
+        else if(proximoAmbiente.getId().equals("ae")){
+           System.out.println(proximoAmbiente);// mostrar tudo que tem no ambiente especial
         }
         else{
             System.out.println("Ambiente vazio.");
@@ -235,26 +266,13 @@ public class Jogo
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos pra onde ir...
             System.out.println("Ir pra onde?");
-           // return; /* funciona como se fosse o `else`.
-        }else{
+           return; /* funciona como se fosse o `else`.*/
+        }
 
         
         String direcao = comando.getSegundaPalavra();
-        Ambiente proximoAmbiente = null;
+        // proximoAmbiente = null;
         
-        if(ambienteAtual.getAmbiente(direcao).getId().equals("ae")){
-            
-            ambienteAtual = buscarAmbiente("ae");
-            String vencedor = rounds(3);
-            if(vencedor.equals("Jogador")){
-                System.out.println("Harry você venceu Valdemor.\nParabéns para concluir o jogo vá para o Quintal Principal");
-                proximoAmbiente = ambienteAtual.getAmbiente("norte");
-            }
-            else{
-                System.out.println("Que pena você perdeu :(");
-                this.fim = true;
-            }
-        }
 
         // Tenta sair do ambiente atual
         
@@ -277,17 +295,50 @@ public class Jogo
         if(direcao.equals("nordeste")){
             proximoAmbiente = ambienteAtual.getAmbiente("nordeste");
         }
+        if (proximoAmbiente == null) {
+            System.out.println("Nao ha passagem!");
+            return;
+        }
+        
+        if(ambienteAtual.getAmbiente(direcao).getId().equals("ae")){
+            
+                        
+            ambienteAtual = buscarAmbiente("ae");
+            System.out.println(":WARNING: Você chegou na Câmera Secreta, certique-se está com a varinha... ");
+            System.out.print("\nIniciar confronto S/n -> ");
+            //String cmd = comando.getPalavraDeComando();
+            switch(cmd){
+                case "lutar" :
+                case "s" :
+                    String vencedor = rounds(2);
+        
+                    if(vencedor.equals("Jogador")){
+                        System.out.println("Harry você venceu Valdemor.\nParabéns para concluir o jogo vá para o Quintal Principal");
+                       // proximoAmbiente = ambienteAtual.getAmbiente("norte");
+                    }
+                    else{
+                        System.out.println("Que pena você perdeu :(");
+                        this.fim = true;
+                    }
+                    break;
+                case "n" :
+                case "N" :
+                    break;
+            }
+            
+            
+        }else
 
         if (proximoAmbiente == null) {
             System.out.println("Nao ha passagem!");
         }
         else {
             ambienteAtual = proximoAmbiente;
-                 
+                
             imprimirLocalizacaoAtual();
             System.out.println();
         }
-        }
+        
     }
     
         /**
@@ -303,6 +354,8 @@ public class Jogo
                }
            }else if (a instanceof AmbienteEspecial){
                if(((AmbienteEspecial) a).getId().equals(id))
+               return a;
+           }else{
                return a;
            }
             
@@ -393,7 +446,28 @@ public class Jogo
         }
         winner = jogador > maquina ? "Jogador" : "Maquina"; // retorna o vencedor por meio das qts de conquistas(rounds)
         return  winner;
-    }    
+    }   
+    /**
+     * 
+     * @return int que corresponde ao ambiente que guardara a varinha
+     */
+    private int sortearVarinha(){
+        Random sorteia = new Random();
+        return sorteia.nextInt(5);
+        
+    }
+    
+    private void pegarItem(){
+        
+    }
+    
+    private void usarItem(){
+        
+    }
+    
+    private String lutaFinal(){
+        return "S";
+    }
 
     /** 
      * "Sair" foi digitado. Verifica o resto do comando pra ver

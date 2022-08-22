@@ -30,13 +30,14 @@ public abstract class Ambiente
     private String id;
 
     /**
-     * Cria um ambiente com a "descricao" passada. Inicialmente, ele
-     * nao tem saidas. "descricao" eh algo como "uma cozinha" ou
-     * "
-     * Create a room described "description". Initially, it has
-     * no exits. "description" is something like "a kitchen" or
-     * "um jardim aberto".
+     * Cria um ambiente com a "descricao" passada.Inicialmente, ele
+ nao tem saidas. "descricao" eh algo como "uma cozinha" ou
+ "
+ Create a room described "description". Initially, it has
+ no exits. "description" is something like "a kitchen" or
+ "um jardim aberto".
      * @param descricao A descricao do ambiente.
+     * @param id
      */
     public Ambiente(String descricao, String id) 
     {
@@ -71,6 +72,13 @@ public abstract class Ambiente
     {
         return descricao;
     }
+
+    @Override
+    public String toString() {
+        return "\nVocê está " + getDescricao() + ", id: " + getId() + '\n';
+    }
+    
+    
 
     protected String getSaidas(){
         String textoSaida = " ";

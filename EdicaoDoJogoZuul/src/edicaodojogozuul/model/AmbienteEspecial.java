@@ -1,6 +1,5 @@
 
 package edicaodojogozuul.model;
-import edicaodojogozuul.view.Arena;
 
 /**
  *
@@ -15,7 +14,17 @@ public class AmbienteEspecial extends Ambiente {
         this.vidaValdemor += vidaValdemor;
         
     }
-    
+    /**
+     * 
+     * @param jogador
+     * @return True se o jagador tiver a Varinha das varinhas
+     */
+    public boolean habilitarEnrtada(Jogador jogador){
+        if(jogador.temItem("varinha")){
+            return true;
+        }
+        return true;
+    }
     
     @Override
     public String getDescricao(){
