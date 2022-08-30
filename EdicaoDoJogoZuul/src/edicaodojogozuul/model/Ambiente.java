@@ -11,17 +11,20 @@ import java.util.HashMap;
 /**
  * Classe Ambiente - um ambiente em um jogo adventure.
  *
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
+ * Esta classe eh parte da aplicacao "Labirinto de Hogwarts.
+ * "Labirinto de Hogwarts" eh um jogo de aventura muito simples e divertido, baseado em texto.  
  *
  * Um "Ambiente" representa uma localizacao no cenario do jogo. Ele eh
  * conectado aos outros ambientes atraves de saidas. As saidas sao
- * nomeadas como norte, sul, leste e oeste. Para cada direcao, o ambiente
+ * nomeadas como norte, sul, leste, oeste e nordeste. Para cada direcao, o ambiente
  * guarda uma referencia para o ambiente vizinho, ou null se nao ha
  * saida naquela direcao.
  * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * Inspirado no jogo word of zuul de Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author modificado por Wildes Sousa 
+ * @version  2022 v1.22-1
  */
 public abstract class Ambiente 
 {
@@ -53,7 +56,6 @@ public abstract class Ambiente
     public String getId() {
         return id;
     }
-    
 
     /**
      * Define as saidas do ambiente. Cada direcao ou leva a um

@@ -1,24 +1,28 @@
 
 package edicaodojogozuul.model;
 
+
 /**
- *
- * @author devsousa
+ Esta classe eh parte da aplicacao "Labirinto de Hogwarts.
+ * "Labirinto de Hogwarts" eh um jogo de aventura muito simples e divertido, baseado em texto.  
+ * 
+ *  A classe Item é composicão da classe jogador ao instancia-la é passada por parametro um item
+ *  a classe item analiza o artefato e configura a durabilidade de cada.
+ *  
+ * Inspirado no jogo word of zuul de Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author modificado por Wildes Sousa 
+ * @version  2022 v1.22-1
  */
 public class Item {
     private int durabilidade;
     private String artefato;
    
 
-    
-
-    /**
-     * 
-     * @param artefato 
-     */
     public Item(String artefato) {
-        definirArtefato(artefato);
-       
+        durabilidade = definirDurabilidadeArtefato(artefato);
+        this.artefato = artefato;
     }
 
     public int getDurabilidade() {
@@ -28,54 +32,56 @@ public class Item {
     public String getArtefato() {
         return artefato;
     }
-    /**
-     * @return - decrementa a durabilidade do item
-     */
-    public void setDurabilidade() {
-        durabilidade -= 2;
+
+    private void setDurabilidade(int durabilidade) {
+        this.durabilidade = durabilidade;
     }
     
-    public void ajustarDurabilidade(int valor){
-        durabilidade = valor;
+    public void decrementaVarinha(){
+        if(getDurabilidade()> 0){
+            setDurabilidade(getDurabilidade()-1);
+        }
+    }
+    
+    public void decrementaItem(){
+        if(getDurabilidade()> 0){
+            setDurabilidade(getDurabilidade()- getDurabilidade());
+        }
     }
     
     /**
      * 
-     * @param Durabilidade e nome do artefato 
+     * @param umArtefado
+     * @return int - define qual será a durabilidade do artefato em questao
      */
-    private void definirArtefato(String umArtefado){
-         switch (umArtefado) {
-            case "varinha":
-                durabilidade = 20;
-                this.artefato = umArtefado;
-                break;
+    private int definirDurabilidadeArtefato(String umArtefato){
+        
+         switch (umArtefato) {
+            
             case "mapa":
-                durabilidade = 1;
-                this.artefato = umArtefado;
+                setDurabilidade(1);
                 break;
             case "pedra":
-                durabilidade = 1;
-                this.artefato = umArtefado;
+                setDurabilidade(1);
                 break;
             case "capa":
-                durabilidade = 2;
-                this.artefato = umArtefado;
+                setDurabilidade(2);
                 break;
             case "vassoura":
-                durabilidade = 1;
-                this.artefato = umArtefado;
+                setDurabilidade(1);
                 break;
-            case "vira_tempo":
-                durabilidade = 1;
-                this.artefato = umArtefado;
+            case "vira-tempo":
+                setDurabilidade(3);
                 break;
             default:
-                durabilidade = 0;
-                this.artefato = null;
+                setDurabilidade(20);/* */
                 break;
         }
-    }
-    
-    
-    
+        return getDurabilidade();
+    }  
+
+    @Override
+    public String toString() {
+        return String.format("\n|%-12s | %-12d|\n", getArtefato(), getDurabilidade() );
+    }    
 }

@@ -2,9 +2,6 @@
 package edicaodojogozuul.view;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.TextField;
 import javax.swing.BoxLayout;
 
@@ -32,7 +29,7 @@ public class TelaLogin {
         janela = new JFrame("Tela de Login");
         lblLogin = new JLabel("Login:");
         txtLogin = new TextField();
-        lblSenha = new JLabel("Senha:", new ImageIcon("src./edicaojogozuul.img/arrow_up.png") ,SwingConstants.LEFT);
+        lblSenha = new JLabel("Senha:", new ImageIcon("/edicaojogozuul.img/arrow_up.png") ,SwingConstants.LEFT);
         btnEntrar = new JButton("Entrar");
         pwfSenha = new JPasswordField();
         montarJanela();

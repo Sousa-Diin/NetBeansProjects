@@ -6,8 +6,9 @@ package edicaodojogozuul.model;
  * @author devsousa
  */
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
+ * 
+ * Esta classe eh parte da aplicacao "Labirinto de Hogwarts.
+ * "Labirinto de Hogwarts" eh um jogo de aventura muito simples e divertido, baseado em texto.  
  *
  * Essa classe guarda informacoes sobre um comando que foi digitado pelo 
  * usuario. Um comando atualmente consiste em duas strings: uma palavra

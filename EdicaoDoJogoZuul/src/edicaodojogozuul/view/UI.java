@@ -8,7 +8,7 @@ package edicaodojogozuul.view;
  *
  * @author devsousa
  */
-public class UI extends javax.swing.JFrame {
+public class UI extends javax.swing.JFrame  {
 
     /**
      * Creates new form UI
@@ -26,6 +26,7 @@ public class UI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jplComandos = new javax.swing.JPanel();
@@ -45,6 +46,9 @@ public class UI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtOut = new javax.swing.JTextPane();
+
+        jRadioButtonMenuItem1.setSelected(true);
+        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -380,6 +384,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel jplComandos;
     private javax.swing.JPanel jplDisplay;

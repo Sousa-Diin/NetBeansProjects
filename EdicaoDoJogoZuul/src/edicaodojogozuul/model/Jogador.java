@@ -1,9 +1,8 @@
 
 package edicaodojogozuul.model;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -11,72 +10,155 @@ import java.util.Collections;
  */
 public class Jogador {
     private int vida;
-    private List<Item> mochila;
+    private  List<Item> mochila;
 
     public Jogador() {
-        vida = 3;
+        vida = 10;
         mochila = new ArrayList<>();
+        addItens();
     }
     
-    public void usarItem(String umItem){
-        
-        Item itemAUsar = buscarItem(umItem);
+    public void decrementaVida(){
+        tiraVida();
+    }
+    
+    private void tiraVida(){
+        vida--;
+    }
+
+    protected void setVida(int vida) {
+        this.vida += vida;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+    
+    
+    
+    public char usarItem(String artefato){           
+        char codigo_da_acao = '/';
+        Item item_escolhido = buscarItemEspecifico(artefato);
+        if(item_escolhido.getArtefato() == null){
+            return codigo_da_acao;
+        }else{
+            switch (item_escolhido.getArtefato()) {
             
-   
-        if(itemAUsar.getArtefato().equals("varinha")){
-           // executa metodo
-            System.out.println("Usando Varinha");
+            case "mapa": // Mostra todos os inimigos 
+                codigo_da_acao = 'm';
+                removerItem(item_escolhido.getArtefato());
+                break;
+            case "pedra": // Elimina todos os inimigos que restaram nos ambientes após ter regatado os amigos
+                codigo_da_acao = 'p';
+                removerItem(item_escolhido.getArtefato());
+                break;
+            case "capa": // Sai do comodo que contém os dementadores sem decrementar a vida
+               codigo_da_acao = 'c';
+               removerItem(item_escolhido.getArtefato());
+                break;
+            case "vassoura": // Item da proxima missão
+                codigo_da_acao = 'v';
+                removerItem(item_escolhido.getArtefato());
+                break;
+            case "vira-tempo": // Adiciona vida do jogador = 3
+                codigo_da_acao = 't';
+                removerItem(item_escolhido.getArtefato());
+                break;
+            case "varinha": // Adiciona vida do jogador = 3
+                codigo_da_acao = '*';
+                buscarItemEspecifico(item_escolhido.getArtefato()).decrementaVarinha();
+                break;
+            default:
+                // Nada ha fazer
+                break;
+            }
         }
+        
+        return codigo_da_acao;
     }
     /**
-     * 
-     * @param umItem
-     * @return - String item adicionado  e ou  capacidade maxima atingida
+     * @return void - responsavél por adicionar os intens possiveis do jogo
+     * Itens possiveis
+     * > mapa do maroto
+     * > capa da invisibilidade
+     * > vassoura voadoura
+     * > pedra filosofal
+     * > vira-tempo
      */
-    private String pegarItem(Item umItem){
-   
-        if(mochila.size() < 5){
-            mochila.add(umItem);
-            return "\nItem adicionado\n";
-          
+    private void addItens(){
+        mochila.add(new Item("mapa"));
+        mochila.add(new Item("capa"));
+       /* mochila.add(new Item("vassoura"));*/
+        mochila.add(new Item("pedra"));
+        mochila.add(new Item("vira-tempo"));
+                
+    }
+    
+    public void pegarVarinha(boolean varinha){
+        
+        if(varinha){
+             mochila.add(new Item("varinha"));
         }
-        return "\nCapacidade maxima atingida.\n";     
+       
+    }
+    
+    public void removerItem(String item){
+        Item i = buscarItemEspecifico(item);
+        if(i.getDurabilidade()>= 0){
+            mochila.remove(i);
+        }
         
     }
     
-    /**
-     * 
-     * @param umItem
-     * @return item - caso o mesmo exista ou caso contrario null
-     */
-    public Item buscarItem(String umItem){
-        for(Item i: mochila){
-           if(i.getArtefato().equals(umItem));
-           return i;
-        }
-        return null;
+    public boolean temItem(String item){
+        return buscarItem(item);
     }
     
-    /**
-     * 
-     * @param umItem
-     * @return boollean - verdedairo se a mochila contém o item caso contrario false 
-     */
-    public boolean temItem(String umItem){
-        for(Item i: mochila){
-           if(i.getArtefato().equals(umItem));
-           return true;
+   
+    
+    public boolean temVarinha(){
+        
+        return (buscarItem("varinha"));  
+    }
+    
+    private boolean buscarItem(String item){
+        
+        for(Item i : mochila){
+            if(i.getArtefato().equals(item))
+                return true;
         }
         return false;
     }
-    
     /**
      * 
-     * @return  List - Uma lista de itens
+     * @param item
+     * @return Item - retorna um item expecifico da mochila
      */
-    public List<Item> getItens(){
-        return Collections.unmodifiableList(mochila);
-       
+    public Item buscarItemEspecifico(String item){
+        
+        for(Item i : mochila){
+            if(i.getArtefato().equals(item))
+                return i;
+        }
+        return null;
+    }
+    /**
+     * 
+     * @return String - retorna uma lista de itens d
+     */
+    private String buscarItem(){
+        String item = "";
+        for(Item i : mochila){
+            item += i + " ";
+        }
+        return item;
+    }
+   /**
+    * 
+    * @return String - retorna uma lista de intens do player
+    */
+    public String exibeItem(){
+        return buscarItem();
     }
     
 }

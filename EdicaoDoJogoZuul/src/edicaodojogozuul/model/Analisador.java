@@ -8,9 +8,9 @@ package edicaodojogozuul.model;
 import java.util.Scanner;
 
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
+ * Esta classe eh parte da aplicacao "Labirinto de Hogwarts".
+ * "Labirinto de Hogwarts" eh um jogo de aventura muito simples e divertido, baseado em texto.  
+ *
  * Esse analisador le a entrada do usuario e tenta interpreta-la como um
  * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
  * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
@@ -21,8 +21,11 @@ import java.util.Scanner;
  * dos comandos conhecidos, ele retorna um objeto comando que eh marcado como
  * um comando desconhecido.
  * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * Inspirado no jogo word of zuul de Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author modificado por Wildes Sousa 
+ * @version  2022 v1.22-1
  */
 public class Analisador 
 {

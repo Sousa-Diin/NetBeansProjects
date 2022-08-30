@@ -10,9 +10,11 @@ import java.util.Scanner;
  * @author devsousa
  */
 /**
- *  Essa eh a classe principal da aplicacao "World of Zull".
- *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
- *  Usuarios podem caminhar em um cenario. E eh tudo! Ele realmente
+ *
+ * Esta classe eh parte da aplicacao "Labirinto de Hogwarts.
+ * "Labirinto de Hogwarts" eh um jogo de aventura muito simples e divertido, baseado em texto.  
+ * 
+ *  O jogador pode caminhar entre cenarios distintos .  Ele realmente
  *  precisa ser estendido para fazer algo interessante!
  * 
  *  Para jogar esse jogo, crie uma instancia dessa classe e chame o metodo
@@ -22,21 +24,24 @@ import java.util.Scanner;
  *  ambientes, cria o analisador e comeca o jogo. Ela tambeme avalia e 
  *  executa os comandos que o analisador retorna.
  * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * Inspirado no jogo word of zuul de Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author modificado por Wildes Sousa 
+ * @version  2022 v1.22-1
  */
 
 public class Jogo 
 {
-    private Analisador analisador;
-    private Ambiente ambienteAtual,  proximoAmbiente = null;
-    private Jogador harry;
-    private boolean fim;
-    private String cmd;
-    /**
-     * Atributo responsavél pela duracão da simulacão
-     */
-    private int tempo_luta;    
+    private final Analisador analisador;
+    private final Jogador harry;
+    private Ambiente ambienteAtual,
+            proximoAmbiente = null,
+            saltaAmbiente = null,
+            ambienteFinal = null;            
+    
+    private boolean valdemor_derrotado;
+    private boolean fim_de_jogo;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -45,8 +50,10 @@ public class Jogo
     {
         criarAmbientes();
         analisador = new Analisador();
-        fim = false;
-        cmd = "";
+        fim_de_jogo = false;
+        harry = new Jogador();
+        valdemor_derrotado = false;
+        
     }
 
     public String getAmbienteAtual() {
@@ -77,7 +84,6 @@ public class Jogo
                 break;
             case 1 : 
                 amb1 = true;
-                break;
             case 2 : 
                 amb2 = true;
                 break;
@@ -92,15 +98,15 @@ public class Jogo
         // cria os ambientes
         entrada_principal = new AmbienteNeutro("na entrada principal da escola de hogwarts","an");
         salao_principal = new AmbienteComum("no salão principal","ac",amb0);
-        camera_secreta = new AmbienteEspecial(3,"na câmara secreta","ae");
+        camera_secreta = new AmbienteEspecial("na câmara secreta","ae");
         torre_das_escadarias = new AmbienteNeutro("na torre das escadarias","an");
         grifinoria = new AmbienteComum("na casa grifinória", "ac",amb3);
         sala_precisa = new AmbienteNeutro("na sala precisa", "an");
-        sonserina = new AmbienteComum("na casa sonserina", "ac", amb4);
+        sonserina = new AmbienteComum("na casa sonserina", "ac", amb2);
         lufa_lufa = new AmbienteNeutro("na casa lufa-lufa", "an");
         corvinal = new AmbienteComum("na casa corvinal", "ac", amb1);
-        banheiro_murta = new AmbienteComum("no banheiro da murta", "ac", amb2);
-        quintal_pricinpal = new AmbienteNeutro("no quintal principal, entre para a escola pra continuar.", "an");
+        banheiro_murta = new AmbienteComum("no banheiro da murta", "ac", amb4);
+        quintal_pricinpal = new AmbienteNeutro("no quintal principal, entre para a escola pra continuar.", "anq");
         
         
         // inicializa as saidas dos ambientes
@@ -145,6 +151,8 @@ public class Jogo
         
 
         ambienteAtual = entrada_principal;  // o jogo comeca na entrada_principal
+        ambienteFinal = quintal_pricinpal; // termina o jogo no quintal principal
+        saltaAmbiente = banheiro_murta; // salta para o ambiente 'bamheiro da murta'
     }
 
     /**
@@ -153,12 +161,13 @@ public class Jogo
     public void jogar() 
     {            
         imprimirBoasVindas();
+        
 
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
         // comandos e os executamos ate o jogo terminar.
                 
         boolean terminado = false;
-        while ((! terminado) && !fim) {
+        while ((! terminado) && !fim_de_jogo) {
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
@@ -171,12 +180,19 @@ public class Jogo
     private void imprimirBoasVindas()
     {
         System.out.println();
-        System.out.println("Bem-vindo ao Labirinto de Hogwarts!");
-        System.out.println("O Labirinto de Hogwarts eh um novo jogo de aventura, em que o Harry(jogador)\nprecisa resgatar seus amigos que lorde Valdemor capturou.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
-        System.out.println();
-        
+        System.out.println("|\t\tBem-vindo ao Labirinto de Hogwarts!\t\t\t|");
+        System.out.println("|O Labirinto de Hogwarts eh um novo jogo de aventura, em que o Jogador  |\n|precisa resgatar seus amigos que lorde Valdemor capturou.\t\t|\n"
+                + "-------------------------------------------------------------------------");
+        System.out.println("\n\n\t\t\t\tCOMANDOS\t\t\t\t|\n|Digite [ajuda] se voce precisar de ajuda.\t\t\t\t|");
+        System.out.println("|\t\t\t\t\t\t\t\t\t|\n| [observar]; [mochila]; [ir <direcão>]; [pegar] e [usar <item>]\t|");
+        System.out.println("\n");
+        mostrarComandosInstrucoes();
+        System.out.printf("\n|-----------------------------------------------------------------------|\n"
+                 + "| DICAS  |Eih Harry cuidado! adiante você encontrará alguns comensais...|\n"
+                 + "|-----------------------------------------------------------------------|\n\n"
+                + "\t\t\t....INICIANDO O JOGO.....\n");
         imprimirLocalizacaoAtual();
+   
     }
 
     /**
@@ -194,6 +210,7 @@ public class Jogo
         }
 
         String palavraDeComando = comando.getPalavraDeComando();
+        
         if (palavraDeComando.equals("ajuda")) {
             imprimirAjuda();
         }
@@ -207,13 +224,26 @@ public class Jogo
             observar();
         }
         else if(palavraDeComando.equals("pegar")){
-            pegarItem();
-        }
+            if(!harry.temVarinha()){
+                pegarVarinha();
+                System.out.println("item salvo... para ver digite > mochila");
+            }
+            System.out.println("Não há mais itens a ser pego.");
+        } 
         else if(palavraDeComando.equals("usar")){
-            usarItem();
+            usarItem(comando);
         }
         else if(palavraDeComando.equals("lutar")){
-            cmd = "lutar";
+            //proximo nivél do jogo
+            System.out.println("Comando indisponivél.");
+        }
+        else if(palavraDeComando.equals("mochila")){
+            System.out.printf("\nVIDAS => [ %d ]\n", harry.getVida());
+            System.out.printf("\n|%-12s | %-6s|\n", "ARTEFATO",  "DURABILIDADE");
+            System.out.println(" ---------------------------");
+            atualizaItemEspecial();
+            System.out.println(harry.exibeItem());
+               
         }
 
         return querSair;
@@ -227,20 +257,54 @@ public class Jogo
         proximoAmbiente = ambienteAtual;
         // usar metodo instaceo
         if(proximoAmbiente.getId().equals("ac")){
+            
            System.out.println(proximoAmbiente);// mostrar tudo que tem no ambiente comum
+           System.out.println("Voce esta " + ambienteAtual.getDescricao());
+           System.out.println("Saidas: " + ambienteAtual.getSaidas());
         }
         else if(proximoAmbiente.getId().equals("ae")){
-           System.out.println(proximoAmbiente);// mostrar tudo que tem no ambiente especial
+           System.out.println(proximoAmbiente.toString());// mostrar tudo que tem no ambiente especial
+           System.out.println("Voce esta " + ambienteAtual.getDescricao());
+           System.out.println("Saidas: " + ambienteAtual.getSaidas());
         }
         else{
             System.out.println("Ambiente vazio.");
+            System.out.println("Voce esta " + ambienteAtual.getDescricao());
+            System.out.println("Saidas: " + ambienteAtual.getSaidas());
         }
+        
+        if (!valdemor_derrotado){
+            if(ambienteAtual instanceof AmbienteEspecial){              
+                System.out.printf(stringFormatada("Valdemor está aqui...  :("));
+            }
+            else{
+                System.out.println(stringFormatada("Valdemor não está aqui.\n"));
+               //System.out.printf("\n|%-10s |%-10s\n","DICAS", "Valdemor não está aqui.|"); 
+            }
+        }
+        else{
+            System.out.println(stringFormatada(" Valdemor foi derrotado...\t\t|\n    \t\tVá para o quintal principal ou use a pedra"));
+              //System.out.printf("\n|%-10s |%-10s\n","DICAS", "Valdemor foi derrotado...|");  
+        }
+    }
+    
+    private String stringFormatada(String str){
+        return String.format("\n|%-10s || %-10s |\n","DICAS:", str);
     }
 
     private void imprimirLocalizacaoAtual(){
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());
-        /*System.out.println("Inimigos: " + ambienteAtual.get);*/
-        System.out.println("Saidas: " + ambienteAtual.getSaidas());
+        if(valdemor_derrotado){
+            if(ambienteAtual instanceof AmbienteNeutro){
+                if(((AmbienteNeutro)ambienteAtual).getId().equals("anq")){
+                    System.out.println("Voce esta " + ambienteAtual.getDescricao());
+                }
+            }
+        }
+        else{
+            System.out.println("Voce esta " + ambienteAtual.getDescricao());
+            System.out.println("Saidas: " + ambienteAtual.getSaidas()); 
+        }
+     
     }
     // Implementacoes dos comandos do usuario
 
@@ -275,66 +339,52 @@ public class Jogo
         
 
         // Tenta sair do ambiente atual
-        
+                
         if(direcao.equals("norte")) {
             proximoAmbiente = ambienteAtual.getAmbiente("norte");
+            ajustaVida(proximoAmbiente);
+            abilitaSaidaCastelo();
+            proximoAmbiente = identificaCameraSecreta(ambienteAtual);
+           
         }
         if(direcao.equals("leste")) {
             proximoAmbiente = ambienteAtual.getAmbiente("leste");
+            ajustaVida(proximoAmbiente);
+            abilitaSaidaCastelo(); 
+            proximoAmbiente = identificaCameraSecreta(ambienteAtual);
         }
         if(direcao.equals("sul")) {
             proximoAmbiente = ambienteAtual.getAmbiente("sul");
+            ajustaVida(proximoAmbiente);
+            abilitaSaidaCastelo();
+            proximoAmbiente = identificaCameraSecreta(ambienteAtual);
         }
         if(direcao.equals("oeste")) {
             proximoAmbiente = ambienteAtual.getAmbiente("oeste");
+            ajustaVida(proximoAmbiente);
+            abilitaSaidaCastelo();
+            proximoAmbiente = identificaCameraSecreta(ambienteAtual);
         }
         /**
          * @author Wildes Sousa
          * cria saida para - CSS nordeste
+         * Obs comentar a linhas 310-313 para o jogo ficar mais emocionante
+         * tornando assim um verdadeiro labirinto
          */
         if(direcao.equals("nordeste")){
             proximoAmbiente = ambienteAtual.getAmbiente("nordeste");
+            ajustaVida(proximoAmbiente);
+            abilitaSaidaCastelo();
+            proximoAmbiente = identificaCameraSecreta(ambienteAtual);
         }
+        
         if (proximoAmbiente == null) {
             System.out.println("Nao ha passagem!");
             return;
         }
-        
-        if(ambienteAtual.getAmbiente(direcao).getId().equals("ae")){
-            
-                        
-            ambienteAtual = buscarAmbiente("ae");
-            System.out.println(":WARNING: Você chegou na Câmera Secreta, certique-se está com a varinha... ");
-            System.out.print("\nIniciar confronto S/n -> ");
-            //String cmd = comando.getPalavraDeComando();
-            switch(cmd){
-                case "lutar" :
-                case "s" :
-                    String vencedor = rounds(2);
-        
-                    if(vencedor.equals("Jogador")){
-                        System.out.println("Harry você venceu Valdemor.\nParabéns para concluir o jogo vá para o Quintal Principal");
-                       // proximoAmbiente = ambienteAtual.getAmbiente("norte");
-                    }
-                    else{
-                        System.out.println("Que pena você perdeu :(");
-                        this.fim = true;
-                    }
-                    break;
-                case "n" :
-                case "N" :
-                    break;
-            }
-            
-            
-        }else
-
-        if (proximoAmbiente == null) {
-            System.out.println("Nao ha passagem!");
-        }
         else {
             ambienteAtual = proximoAmbiente;
-                
+                     
             imprimirLocalizacaoAtual();
             System.out.println();
         }
@@ -363,6 +413,33 @@ public class Jogo
         }
         return null;
     }
+    
+    public Ambiente identificaCameraSecreta(Ambiente lugar){
+        if(lugar instanceof AmbienteEspecial){
+            System.out.println(":WARNING: Você chegou na Câmera Secreta");
+            if(harry.temVarinha()){
+                if(!valdemor_derrotado){
+                    System.out.print("\n#########Iniciando confronto##########\n");
+                    String vencedor = rounds(harry.getVida());
+        
+                    if(vencedor.equals("Jogador")){
+                        System.out.println("\n\tHarry você venceu Valdemor.\n\t\tParabéns!!! \nPara concluir missão, use a pedra vilosofal com ela você sairá mais rapido do castelo.\n");
+                        valdemor_derrotado = true; 
+                        return (harry.getVida()>= 5 ) ? ambienteFinal: saltaAmbiente;
+                    }
+                    else{
+                        System.out.println("\nQue pena você perdeu :(");
+                        this.fim_de_jogo = true;
+                    }
+                    
+                }else{System.out.println("Você já lutou ");}
+            }else if(valdemor_derrotado){
+                System.out.println("Você já lutou com valdemor. Você não esta mais com a varinha.");
+            }else{System.out.println("Vish,você não está com a varinha. Intem necessario para este Ambiente.");}
+        }
+        return proximoAmbiente; // Warning 
+    }
+    
      /**
      * 
      * @return String - retorna o [nome do vencedor]
@@ -380,9 +457,9 @@ public class Jogo
        String ganhador = "";
        
        int inicio = 0;
-       while(inicio < tempo_luta ){
-           socosJogador += socos.nextInt(8)+1;
-           socosAdversario += socos.nextInt(8)+1;
+       while(inicio < 3 ){
+           socosJogador += socos.nextInt(5);
+           socosAdversario += socos.nextInt(4);
            
            ganhador = (socosJogador > socosAdversario) ? "Jogador" : "Maquina" ;
            inicio++;
@@ -396,9 +473,9 @@ public class Jogo
      * @@code if (qtdVitoriaJogador > vitoriaMaquina) {return jogador;}
      */
     
-    public String rounds(int vidas){
+    private String rounds(int vidas){
         
-        String vencedorRounds;
+        String vencedorRounds = "";
         String winner;
         String ent;
         
@@ -413,8 +490,8 @@ public class Jogo
         while(rounds > 0 ){
             System.out.println("Time: " + rounds);
             System.out.println("Round " + r++);
-            System.out.print("\nPara lutar digite [L]");
-            System.out.print("\nLutar -> ");
+            System.out.print("\nPara lutar digite [l]");
+            System.out.print("\n> ");
             ent = sc.nextLine();
             
             switch(ent){
@@ -430,8 +507,15 @@ public class Jogo
                         }
                         else{
                             maquina++;
+                            harry.decrementaVida();
                         }
                         break;
+                case "v":
+                case "V":
+                    System.out.println("\n[VIDAS : " + harry.getVida() + "]\n");
+                    rounds++;
+                    r--;
+                    break;
                 default:
                     System.out.println("Comando invalido...\n\tDa proxima vez tente l ou L. ");
                     vencedorRounds = "aguandando comando válido\n";
@@ -457,16 +541,150 @@ public class Jogo
         
     }
     
-    private void pegarItem(){
-        
+    public void abilitaSaidaCastelo(){
+        if(valdemor_derrotado){
+            if(ambienteAtual instanceof AmbienteNeutro){
+                if(((AmbienteNeutro)ambienteAtual).getId().equals("anq")){
+                    System.out.println("\n\t\t!!!JOGO CONCLUIDO!!!");
+                    fim_de_jogo = true;
+                }
+            }
+        }
     }
     
-    private void usarItem(){
-        
+    private void pegarVarinha(){
+        if(ambienteAtual.getId().equals("ac")){
+            if(((AmbienteComum)ambienteAtual).getVarinha()){
+                harry.pegarVarinha(!((AmbienteComum)ambienteAtual).deixarVarinha());
+            }
+        }
     }
     
-    private String lutaFinal(){
-        return "S";
+    private void atualizaItemEspecial(){
+        if (harry.temItem("varinha")){
+            if(harry.buscarItemEspecifico("varinha").getDurabilidade() == 0){
+                harry.removerItem("varinha");
+            }
+        }
+    }
+    
+    private void usarItem(Comando comando){
+        if(!comando.temSegundaPalavra()) {
+            // se nao ha segunda palavra, nao sabemos oque pegar...
+            System.out.println("usar oque?");
+           return;
+        }
+
+        
+        String artefato = comando.getSegundaPalavra();
+        switch (harry.usarItem(artefato)) {
+            case 'c': //capa - 2
+                System.out.println("Usando a capa...");
+                break;
+            case 'm': //mapa - 1
+                System.out.println("\t\t\t\t\tMAPA DO JOGO");
+                Instrucoes.exibirMapa();
+                break;
+            case 'p': //pedra - 1 
+                if(valdemor_derrotado){
+                    proximoAmbiente = ambienteFinal;
+                }else{
+                    System.out.println("Usando pedra filosofal");
+                }
+                break;
+            case 'v': //vassoura - 1
+                System.out.println("Usando a vassoura");
+                break;
+            case 't': //vira-tempo - 3
+                harry.setVida(harry.buscarItemEspecifico("vira-tempo").getDurabilidade());
+                break;
+            case '*': //varinha - 20
+                if(harry.buscarItemEspecifico("varinha").getDurabilidade() >= 2){
+                    eliminarInimigos(proximoAmbiente);
+                }else{
+                    System.out.println("você está sem a varinha");
+                }
+                
+                break;
+            case '/': //se comando não existir
+                System.out.println("não entendi");
+                break;
+            default: // `/`. Não faz nada
+                System.out.println("você não tem esse item.");
+                
+        }
+    }
+    
+     private void eliminarInimigos(Ambiente umAmbiente){
+        if(umAmbiente instanceof AmbienteComum){
+            ((AmbienteComum) umAmbiente).destruirInimigos();
+        }
+     }
+     
+    private void ajustaVida(Ambiente umAmbiente){
+        if(umAmbiente instanceof AmbienteComum){
+            int inimigos = ((AmbienteComum)umAmbiente).getInimigos();
+            if(inimigos > 0 && harry.getVida() > 3){
+                for(int i = 0; i < inimigos;i++){
+                    harry.decrementaVida();
+                }
+            }
+            else if(harry.getVida() <= 3 && harry.temItem("vira-tempo")){
+                harry.setVida(3);
+                harry.buscarItemEspecifico("vira-tempo").decrementaItem();// devido a modalidade de usar item foi preciso atualisa-lo antes
+                harry.removerItem("vira-tempo");
+            }else if(inimigos != 0){
+                if(harry.temItem("capa")){
+                    harry.buscarItemEspecifico("capa").decrementaItem();
+                    harry.removerItem("capa");
+                }else if(harry.temItem("mapa")){
+                    harry.buscarItemEspecifico("mapa").decrementaItem();
+                    harry.removerItem("mapa");
+                }else if(harry.temItem("vira-tempo")){// verificar redudancia
+                    harry.buscarItemEspecifico("vira-tempo").decrementaItem();
+                    harry.removerItem("vira-tempo");
+                }else{
+                    if(harry.temVarinha()){
+                        harry.buscarItemEspecifico("varinha").decrementaVarinha();
+                    }
+                }
+            }
+        }else{
+            /**
+             * @author - Wildes Sousa
+             * Não faz nada 
+             * Apareceu ERRO: Exception in thread "main" java.lang.NullPointerException
+             * qnd uma saida nao ajustada é escolhida 
+             * date: 24/08 hour 13:24
+             */
+        }
+    }
+
+    private void mostrarComandosInstrucoes(){
+        int op;
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\nINFORMAÇÕES ?\n"
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Iniciar Jogo \n>");
+       
+        
+        do{
+            
+            op = sc.nextInt();
+            switch (op) {
+                case 1:
+                    Instrucoes.exibirEstatisticas();
+                    break;
+                case 2:
+                    Instrucoes.exibirComandos();
+                    break;
+                default:
+                    System.out.println("\t\t\tVAMOS COMEÇAR");
+                    //outraOpcao = false;
+                    break;
+            }
+            System.out.print("\nINFORMAÇÕES ?\n"
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos\n3 - Iniciar Jogo \n>");
+        }while(op != 3  && op >= 1);
     }
 
     /** 
