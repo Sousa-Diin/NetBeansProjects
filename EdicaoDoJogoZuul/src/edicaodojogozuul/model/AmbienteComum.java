@@ -11,14 +11,14 @@ import java.util.Random;
 public class AmbienteComum extends Ambiente {
     private int inimigos;
     private boolean varinha;
-    /*private Item item;*/
+    //private Item varinha;
     
 
     public AmbienteComum(String descricao, String id,boolean sorteio) {
         super(descricao, id);
         criarInimigos();
         varinha = sorteio;
-        /*item = new Item(sortearItem());*/
+        //varinha = new Item();
         
     }
     
@@ -57,7 +57,7 @@ public class AmbienteComum extends Ambiente {
     @Override
     public String toString() {
         String resp =  (getVarinha()) ? "sim" : "não";
-        return String.format("******STATUS DO AMBIENTE******\n\n%-6s | %d\n%-21s | %s\n","Quatidade de inimigos", getInimigos(), "Contém varinha", resp);
+        return String.format("\n******STATUS DO AMBIENTE******\n\n%-6s | %d\n%-21s | %s\n","Quatidade de inimigos", getInimigos(), "Contém varinha", resp);
     }
 
     

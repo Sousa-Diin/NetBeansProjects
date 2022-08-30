@@ -11,6 +11,4 @@ public class AmbienteNeutro extends Ambiente{
         super(descricao, id);
     }
     
-    
-    
 }

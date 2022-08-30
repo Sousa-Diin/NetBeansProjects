@@ -33,6 +33,7 @@ import java.util.Scanner;
 
 public class Jogo 
 {
+    public static int score = 0 ;
     private final Analisador analisador;
     private final Jogador harry;
     private Ambiente ambienteAtual,
@@ -53,7 +54,7 @@ public class Jogo
         fim_de_jogo = false;
         harry = new Jogador();
         valdemor_derrotado = false;
-        
+        score++;
     }
 
     public String getAmbienteAtual() {
@@ -268,7 +269,7 @@ public class Jogo
            System.out.println("Saidas: " + ambienteAtual.getSaidas());
         }
         else{
-            System.out.println("Ambiente vazio.");
+            System.out.println("\n******STATUS DO AMBIENTE******\n\nAmbiente vazio.\n");
             System.out.println("Voce esta " + ambienteAtual.getDescricao());
             System.out.println("Saidas: " + ambienteAtual.getSaidas());
         }
@@ -278,7 +279,7 @@ public class Jogo
                 System.out.printf(stringFormatada("Valdemor está aqui...  :("));
             }
             else{
-                System.out.println(stringFormatada("Valdemor não está aqui.\n"));
+                System.out.println(stringFormatada("Valdemor não está aqui."));
                //System.out.printf("\n|%-10s |%-10s\n","DICAS", "Valdemor não está aqui.|"); 
             }
         }
@@ -289,7 +290,7 @@ public class Jogo
     }
     
     private String stringFormatada(String str){
-        return String.format("\n|%-10s || %-10s |\n","DICAS:", str);
+        return String.format("\n|%-10s | %-10s |\n","DICAS:", str);
     }
 
     private void imprimirLocalizacaoAtual(){
@@ -547,6 +548,7 @@ public class Jogo
                 if(((AmbienteNeutro)ambienteAtual).getId().equals("anq")){
                     System.out.println("\n\t\t!!!JOGO CONCLUIDO!!!");
                     fim_de_jogo = true;
+                    score +=1;
                 }
             }
         }
@@ -587,7 +589,7 @@ public class Jogo
                 break;
             case 'p': //pedra - 1 
                 if(valdemor_derrotado){
-                    proximoAmbiente = ambienteFinal;
+                    ambienteAtual = ambienteFinal;
                 }else{
                     System.out.println("Usando pedra filosofal");
                 }
@@ -664,7 +666,7 @@ public class Jogo
         int op;
         Scanner sc = new Scanner(System.in);
         System.out.print("\nINFORMAÇÕES ?\n"
-                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Iniciar Jogo \n>");
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n>");
        
         
         do{
@@ -677,14 +679,18 @@ public class Jogo
                 case 2:
                     Instrucoes.exibirComandos();
                     break;
+                case 3:
+                    System.out.println("Quantidades de vezes jogadas: " + score);
+                    break;
                 default:
                     System.out.println("\t\t\tVAMOS COMEÇAR");
                     //outraOpcao = false;
                     break;
             }
-            System.out.print("\nINFORMAÇÕES ?\n"
-                + "1 - Exibir Estatísticas\n2 - Exibir Comandos\n3 - Iniciar Jogo \n>");
-        }while(op != 3  && op >= 1);
+       System.out.print("\nINFORMAÇÕES ?\n"
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n>");
+       
+        }while(op != 4  && op >= 1);
     }
 
     /** 

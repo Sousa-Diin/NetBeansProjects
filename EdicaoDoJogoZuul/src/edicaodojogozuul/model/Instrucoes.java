@@ -76,7 +76,8 @@ public final class Instrucoes {
         System.out.println("	> capa invisivél............... passar pelos ambientes sem decrementar a vida;");
         System.out.println("	> pedra filosófal.............. ajudar na saida do castelo após ter derrotado valdemor;");
         System.out.println("	> vassoura voadoura............ dar saltos pelos ambientes. Ps: segunda fase,");
-        System.out.println("	> vira tempo................... adicinar <3> vidas ao jogador.");
+        System.out.println("	> vira tempo................... adicinar <3> vidas ao jogador.\n E para que o jogador possa destruir os "
+                + "inimigos e derrotar o valdemor ele precisa pegar a varinha");
         System.out.println("	");
         System.out.println(" WARNING: caso a vida do jogador chegue em 3 o vira-tempo e acinado de for automatica,");
         System.out.println(" 		  apartir dai uma nova lógica e estabelecida, podendo o jogador ficar com 1 ou 3 vidas ");

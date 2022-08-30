@@ -78,26 +78,27 @@ public class Jogador {
     }
     /**
      * @return void - responsavél por adicionar os intens possiveis do jogo
-     * Itens possiveis
+     * que são
      * > mapa do maroto
      * > capa da invisibilidade
      * > vassoura voadoura
      * > pedra filosofal
      * > vira-tempo
+     * > varinha
      */
     private void addItens(){
-        mochila.add(new Item("mapa"));
-        mochila.add(new Item("capa"));
-       /* mochila.add(new Item("vassoura"));*/
-        mochila.add(new Item("pedra"));
-        mochila.add(new Item("vira-tempo"));
+        mochila.add(new Item("mapa",1));
+        mochila.add(new Item("capa",2));
+       /* mochila.add(new Item("vassoura",1)); proxima fase*/
+        mochila.add(new Item("pedra",1));
+        mochila.add(new Item("vira-tempo",3));
                 
     }
     
     public void pegarVarinha(boolean varinha){
         
         if(varinha){
-             mochila.add(new Item("varinha"));
+             mochila.add(new Item("varinha",20));
         }
        
     }
