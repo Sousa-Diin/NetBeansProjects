@@ -1,17 +1,13 @@
 
 package edicaodojogozuul.model;
 
-/**
- *
- * @author Wildes Sousa
- */
 
 /**
- * 
- * @author Wildes Sousa
+ *  
  * Classe Utilitaria do Jogo
  * 
- * @return void - Exibe instruções e comandos do jogo
+ * @author Wildes Sousa
+ * @return Exibe as instruções e comandos do jogo
  * 
  */
 public final class Instrucoes {
@@ -108,24 +104,26 @@ public final class Instrucoes {
      * @return void - Exibe na tela o mapa do jogo caso o jogador esteja de posse do item responsavél pelo mesmo.
      */
     public static void exibirMapa(){
-         System.out.println("\n____________________________________________________________________________________________________ "); 
-            System.out.println("|                      |                       |                         |                          |");
-            System.out.println(":                      ¨                       ¨                         ¨                          |");
-            System.out.println(":       ENTRADA                TORRE                 CASA CORVINAL              SALA PRECISA        |");
-            System.out.println("T       PRINCIPAL      T        DAS            T                         T                          |");
-            System.out.println("|                      |     ESCADARIAS        |                         |                          |");
-            System.out.println("|                      |__________       ______|_________________________|__________________       _|"); System.out.println("|                      |                           |                        |                       |"); System.out.println("|                      |                           |                        |                       |");
-            System.out.println("|______________________|                           |                        |                       |");
-            System.out.println("|                      |                           ¨          CASA          ¨      BANHEIRO         |");
-            System.out.println("|                      ¨          SALÃO                     SONSERINA                 DA            |");
-            System.out.println("|                               PRINCIPAL          T                        T        MURTA          |");
-            System.out.println("|         CASA                                     |                        |                       |");
-            System.out.println("|      GRIFINORIA      T                           |________________________|________        _______|");
-            System.out.println("|                      |                           |                         |       ********       |");
-            System.out.println("|                      |                           |         CASA            |        CAMÂRA        |");
-            System.out.println("|                      |                                   LUFA-LUFA         |        SECRETA       |");
-            System.out.println("|                      |                                                     |                      |");
-            System.out.println("|______________________|___________________________T_________________________|______________________|");
+         System.out.println("\n  ____________________________________________________________________________________________________ "); 
+            System.out.println("Q|                      |                       |                         |                          |");
+            System.out.println("U:                      ¨                       ¨                         ¨                          |");
+            System.out.println("I:       ENTRADA                TORRE                 CASA CORVINAL              SALA PRECISA        |");
+            System.out.println("NT       PRINCIPAL      T        DAS            T                         T                          |");
+            System.out.println("T|                      |     ESCADARIAS        |                         |                          |");
+            System.out.println("A|                      |__________       ______|_________________________|__________________       _|"); 
+            System.out.println("l|                      |                           |                        |                       |"); 
+            System.out.println("*|                      |                           |                        |                       |");
+            System.out.println("*|______________________|                           |                        |                       |");
+            System.out.println("*|                      |                           ¨          CASA          ¨      BANHEIRO         |");
+            System.out.println("P|                      ¨          SALÃO                     SONSERINA                 DA            |");
+            System.out.println("R|                               PRINCIPAL          T                        T        MURTA          |");
+            System.out.println("I|         CASA                                     |                        |                       |");
+            System.out.println("N|      GRIFINORIA      T                           |________________________|________        _______|");
+            System.out.println("C|                      |                           |                         |       ********       |");
+            System.out.println("I|                      |                           |         CASA            |        CAMÂRA        |");
+            System.out.println("P|                      |                                   LUFA-LUFA         |        SECRETA       |");
+            System.out.println("A|                      |                                                     |                      |");
+            System.out.println("L|______________________|___________________________T_________________________|______________________|");
             System.out.println("");
             System.out.println("  |   ");         
             System.out.println("  ¨    PORTAS");

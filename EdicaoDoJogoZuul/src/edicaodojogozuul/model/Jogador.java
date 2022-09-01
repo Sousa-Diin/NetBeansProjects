@@ -5,31 +5,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Entidade que interage com o jogo, tornando a usabilidade do jogo mais interesante 
  * @author Wildes Sousa
  */
 public class Jogador {
     private int vida;
     private  List<Item> mochila;
 
+    /**
+     * Cria uma lista para guardar os itens do jogador,
+     * adiciona os itens iniciais e seta a vida inicial do jogador
+     */
     public Jogador() {
         vida = 10;
         mochila = new ArrayList<>();
         addItens();
     }
-    
+  
+    /**
+     * atualiza a vida do jogador
+     */
     public void decrementaVida(){
         tiraVida();
     }
-    
+   
+    /**
+     * decrementa a vida do jogador
+     */
     private void tiraVida(){
         vida--;
     }
 
+    /**
+     * Ajusta a vida do jogador
+     * @param vida 
+     */
     protected void setVida(int vida) {
         this.vida += vida;
     }
 
+    /**
+     * Retorna a vida do jogador
+     * @return vida
+     */
     public int getVida() {
         return vida;
     }
@@ -39,16 +57,16 @@ public class Jogador {
     public char usarItem(String artefato){           
         char codigo_da_acao = '/';
         Item item_escolhido = buscarItemEspecifico(artefato);
-        if(item_escolhido.getArtefato() == null){
-            return codigo_da_acao;
-        }else{
+        if(item_escolhido.getArtefato() == null){// tratar erro #23
+             codigo_da_acao= '/';
+        }else {
             switch (item_escolhido.getArtefato()) {
             
-            case "mapa": // Mostra todos os inimigos 
+            case "mapa": // Mostra o mapa do jogo e todos os inimigos 
                 codigo_da_acao = 'm';
                 removerItem(item_escolhido.getArtefato());
                 break;
-            case "pedra": // Elimina todos os inimigos que restaram nos ambientes após ter regatado os amigos
+            case "pedra": // Leva o jogador para saida do ambiente
                 codigo_da_acao = 'p';
                 removerItem(item_escolhido.getArtefato());
                 break;
@@ -69,7 +87,7 @@ public class Jogador {
                 buscarItemEspecifico(item_escolhido.getArtefato()).decrementaVarinha();
                 break;
             default:
-                // Nada ha fazer
+                codigo_da_acao = 'n';
                 break;
             }
         }
@@ -78,7 +96,7 @@ public class Jogador {
     }
     /**
      * @return void - responsavél por adicionar os intens possiveis do jogo
-     * que são
+     * que são:
      * > mapa do maroto
      * > capa da invisibilidade
      * > vassoura voadoura
@@ -94,7 +112,11 @@ public class Jogador {
         mochila.add(new Item("vira-tempo",3));
                 
     }
-    
+    /**
+     * Método que cria e adiciona a varinha na mochila 
+     * caso o ambiente a contenha 
+     * @param varinha 
+     */
     public void pegarVarinha(boolean varinha){
         
         if(varinha){
@@ -102,7 +124,11 @@ public class Jogador {
         }
        
     }
-    
+    /**
+     * Recebe uma <String> item 
+     * caso o item exista na mochila o mesmo e removido
+     * @param item 
+     */
     public void removerItem(String item){
         Item i = buscarItemEspecifico(item);
         if(i.getDurabilidade()>= 0){
@@ -110,18 +136,27 @@ public class Jogador {
         }
         
     }
-    
+    /**
+     * 
+     * @param item
+     * @return <boolean> retorna vardadeiro caso o Item existir na mochila
+     */
     public boolean temItem(String item){
         return buscarItem(item);
     }
-    
-   
-    
+    /**
+     * 
+     * @return boolean - verdadeiro caso a varinha esteja na <ArrayList> mochila
+     */    
     public boolean temVarinha(){
         
         return (buscarItem("varinha"));  
     }
-    
+    /**
+     * 
+     * @param item
+     * @return 
+     */
     private boolean buscarItem(String item){
         
         for(Item i : mochila){

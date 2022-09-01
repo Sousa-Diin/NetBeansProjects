@@ -41,6 +41,10 @@ public class Analisador
         entrada = new Scanner(System.in);
     }
 
+    /**
+     * 
+     * @return palavrasComando - do jogo
+     */
     public PalavrasComando getPalavrasDeComando() {
         return palavrasDeComando;
     }

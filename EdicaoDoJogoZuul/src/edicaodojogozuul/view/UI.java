@@ -4,17 +4,21 @@
  */
 package edicaodojogozuul.view;
 
+import edicaodojogozuul.model.Jogo;
+
 /**
  *
  * @author devsousa
  */
 public class UI extends javax.swing.JFrame  {
 
+    Jogo jogo = new Jogo();
     /**
      * Creates new form UI
      */
     public UI() {
         initComponents();
+        jogo.jogar();
     }
 
     /**
@@ -285,7 +289,7 @@ public class UI extends javax.swing.JFrame  {
                 .addGap(150, 150, 150))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,7 +325,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void btnMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoreActionPerformed
         // TODO add your handling code here:
-        txtOut.setText("Tecla especial");
+        
     }//GEN-LAST:event_btnMoreActionPerformed
 
     private void btnAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjudaActionPerformed

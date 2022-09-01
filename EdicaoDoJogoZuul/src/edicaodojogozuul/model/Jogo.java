@@ -85,6 +85,7 @@ public class Jogo
                 break;
             case 1 : 
                 amb1 = true;
+                break;//ERRO #10
             case 2 : 
                 amb2 = true;
                 break;
@@ -117,7 +118,7 @@ public class Jogo
         quintal_pricinpal.ajustarSaidas("sul",null);*/
 
         
-        entrada_principal.ajustarSaidas("oeste", quintal_pricinpal);
+        entrada_principal.ajustarSaidas(null, quintal_pricinpal);
         entrada_principal.ajustarSaidas("leste", torre_das_escadarias);
         /*entrada_principal.ajustarSaidas("norte", null);
         entrada_principal.ajustarSaidas("sul", null);*/
@@ -176,10 +177,12 @@ public class Jogo
     }
 
     /**
+     * Exibe as Boas Vindas e
      * Imprime a mensagem de abertura para o jogador.
      */
     private void imprimirBoasVindas()
     {
+        int tot_inimigos = AmbienteComum.getTotInimigos();
         System.out.println();
         System.out.println("|\t\tBem-vindo ao Labirinto de Hogwarts!\t\t\t|");
         System.out.println("|O Labirinto de Hogwarts eh um novo jogo de aventura, em que o Jogador  |\n|precisa resgatar seus amigos que lorde Valdemor capturou.\t\t|\n"
@@ -189,7 +192,7 @@ public class Jogo
         System.out.println("\n");
         mostrarComandosInstrucoes();
         System.out.printf("\n|-----------------------------------------------------------------------|\n"
-                 + "| DICAS  |Eih Harry cuidado! adiante você encontrará alguns comensais...|\n"
+                 + "| DICAS  |Eih Harry cuidado! adiante você encontrará [" +tot_inimigos + "] comensais...|\n"
                  + "|-----------------------------------------------------------------------|\n\n"
                 + "\t\t\t....INICIANDO O JOGO.....\n");
         imprimirLocalizacaoAtual();
@@ -288,11 +291,18 @@ public class Jogo
               //System.out.printf("\n|%-10s |%-10s\n","DICAS", "Valdemor foi derrotado...|");  
         }
     }
-    
+    /**
+     * Formata a string passado por parametro
+     * @param str
+     * @return String
+     */
     private String stringFormatada(String str){
         return String.format("\n|%-10s | %-10s |\n","DICAS:", str);
     }
 
+    /**
+     * Mostra a localizacão atual do ambiente
+     */
     private void imprimirLocalizacaoAtual(){
         if(valdemor_derrotado){
             if(ambienteAtual instanceof AmbienteNeutro){
@@ -392,10 +402,10 @@ public class Jogo
         
     }
     
-        /**
-     * 
+     /**
+     * Faz a busca dos ambientes 
      * @param id
-     * @return Ambiente Especial ou Ambiente Comum
+     * @return Ambiente
      */
     private Ambiente buscarAmbiente(String id){
         for(Ambiente a  : ambienteAtual.getAmbiente()){
@@ -414,8 +424,16 @@ public class Jogo
         }
         return null;
     }
-    
-    public Ambiente identificaCameraSecreta(Ambiente lugar){
+    /**
+     * Método que verificar se o jogador chegou no ambiente da luta,
+     * se o mesmo esta de posse da varinha e se o valdemor esta vivo
+     * caso todas as condicões estabelecidas acima seja verdadeira a 
+     * entrado do jogador e liberado no momento que ele tenta sair do 
+     * ambiente
+     * @param lugar
+     * @return Ambiente
+     */
+    public Ambiente identificaCameraSecreta(Ambiente lugar){//ERRO #19
         if(lugar instanceof AmbienteEspecial){
             System.out.println(":WARNING: Você chegou na Câmera Secreta");
             if(harry.temVarinha()){
@@ -426,7 +444,9 @@ public class Jogo
                     if(vencedor.equals("Jogador")){
                         System.out.println("\n\tHarry você venceu Valdemor.\n\t\tParabéns!!! \nPara concluir missão, use a pedra vilosofal com ela você sairá mais rapido do castelo.\n");
                         valdemor_derrotado = true; 
-                        return (harry.getVida()>= 5 ) ? ambienteFinal: saltaAmbiente;
+                        //Colocar em um if pra reduzir repeticoes
+                        System.out.println((harry.getVida() >= 5 && harry.temItem("pedra"))? "\n####Seu <Item> - pedra foi acionado automaticamente####\n" : "");
+                        return (harry.getVida()>= 5 && harry.temItem("pedra")) ? ambienteFinal: saltaAmbiente;
                     }
                     else{
                         System.out.println("\nQue pena você perdeu :(");
@@ -443,10 +463,9 @@ public class Jogo
     
      /**
      * 
-     * @return String - retorna o [nome do vencedor]
-     * gera uma quantidade de socos aleatorio para cada lutador 
-     * com base em um detenminado tempo de luta passado no construtor da classe
-     * e ao final da simulacão retorna qual lutador socou mais.
+     * @return String - retorna o [nome do vencedor] 
+     * gerado após uma sequencia de golpes aleatorio para cada lutador 
+     * e ao final da simulacão retorna qual lutador teve um numero elevado de golpes.
      */
     
     private String simularLuta(){
@@ -470,8 +489,10 @@ public class Jogo
     /**
      * 
      * @param vidas
-     * @return String - retorna o resultado final de cada round (nome do ganhador) -> Jogador or Maquina
-     * @@code if (qtdVitoriaJogador > vitoriaMaquina) {return jogador;}
+     * @return String - Jogador or Maquina resultado final de cada round (nome do ganhador) 
+     * método desenvolvido pra proporcionar uma interacão mais realista ao jogador. Podendo o mesmo 
+     * acionar comando 
+     * @code if (qtdVitoriaJogador > vitoriaMaquina) {return jogador;}
      */
     
     private String rounds(int vidas){
@@ -530,7 +551,7 @@ public class Jogo
             rounds--;
         }
         winner = jogador > maquina ? "Jogador" : "Maquina"; // retorna o vencedor por meio das qts de conquistas(rounds)
-        return  winner;
+        return  winner;//ERRO #25
     }   
     /**
      * 
@@ -541,19 +562,31 @@ public class Jogo
         return sorteia.nextInt(5);
         
     }
-    
-    public void abilitaSaidaCastelo(){
+    /**
+     * Este método é responsavel por verificar se o valdemor foi derrotado,
+     * se o jogador chegou ao destino final(Saida do castelo) e concluir o jogo.
+     * 
+     */
+    private void abilitaSaidaCastelo(){
         if(valdemor_derrotado){
             if(ambienteAtual instanceof AmbienteNeutro){
                 if(((AmbienteNeutro)ambienteAtual).getId().equals("anq")){
-                    System.out.println("\n\t\t!!!JOGO CONCLUIDO!!!");
-                    fim_de_jogo = true;
-                    score +=1;
+                    if(valdemor_derrotado){
+                        System.out.println("\n\t\t!!!JOGO CONCLUIDO!!!");
+                        fim_de_jogo = true;
+                        score +=1; 
+                    }else{//AJUSTE #01
+                        
+                    }
                 }
             }
         }
     }
-    
+    /**
+     * Caso o ambiente atual seja um supertipo AmbienteComum 
+     * e tem a varinha o mesmo deixa o item que por sua vez e guardado na mochila 
+     * do jogador
+     */
     private void pegarVarinha(){
         if(ambienteAtual.getId().equals("ac")){
             if(((AmbienteComum)ambienteAtual).getVarinha()){
@@ -561,7 +594,9 @@ public class Jogo
             }
         }
     }
-    
+    /**
+     * Caso a durabilidade da varinha chegue a zero atualiza o status ao exibir no display
+     */
     private void atualizaItemEspecial(){
         if (harry.temItem("varinha")){
             if(harry.buscarItemEspecifico("varinha").getDurabilidade() == 0){
@@ -569,7 +604,12 @@ public class Jogo
             }
         }
     }
-    
+    /**
+     * Método que executa o comando digitado pelo jogador
+     * e recebe um código <char> do jogador caso tenha o item em sua mochila. Apartir daí executa o método condizente ao comando
+     * requisitado
+     * @param comando 
+     */
     private void usarItem(Comando comando){
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos oque pegar...
@@ -581,7 +621,7 @@ public class Jogo
         String artefato = comando.getSegundaPalavra();
         switch (harry.usarItem(artefato)) {
             case 'c': //capa - 2
-                System.out.println("Usando a capa...");
+                System.out.println("Usando a capa...");//AJUSTE #05
                 break;
             case 'm': //mapa - 1
                 System.out.println("\t\t\t\t\tMAPA DO JOGO");
@@ -598,13 +638,17 @@ public class Jogo
                 System.out.println("Usando a vassoura");
                 break;
             case 't': //vira-tempo - 3
-                harry.setVida(harry.buscarItemEspecifico("vira-tempo").getDurabilidade());
+               // Item vida_extra = harry.buscarItemEspecifico("vira-tempo"); VERIFICAR RETORNO 
+                //NÃO DEU CERTO PASSAR A BUSCA DO ITEM + SUA DURABILIDADE COMO PARAMETRO
+                harry.setVida(3);
+                System.out.println("\n####Kit de vida ajustado####\n");
                 break;
             case '*': //varinha - 20
                 if(harry.buscarItemEspecifico("varinha").getDurabilidade() >= 2){
                     eliminarInimigos(proximoAmbiente);
+                    System.out.println("um inimigo abatido...");
                 }else{
-                    System.out.println("você está sem a varinha");
+                    System.out.println("você não tem poder suficiente na varinha");
                 }
                 
                 break;
@@ -616,13 +660,21 @@ public class Jogo
                 
         }
     }
-    
-     private void eliminarInimigos(Ambiente umAmbiente){
+    /**
+     * Método responsavel por chamar o método destruir inimigos 
+     * @param umAmbiente 
+     */
+    private void eliminarInimigos(Ambiente umAmbiente){
         if(umAmbiente instanceof AmbienteComum){
             ((AmbienteComum) umAmbiente).destruirInimigos();
         }
      }
-     
+    /**
+     * Método que ajusta a vida do jogador
+     * a cada confonto com o inimigo a vida do mesmo e decrementada mais detalhes ver na 
+     * classe Instrucoes no method exibirEstatisticas na linha 78 no WARNING
+     * @param umAmbiente 
+     */ 
     private void ajustaVida(Ambiente umAmbiente){
         if(umAmbiente instanceof AmbienteComum){
             int inimigos = ((AmbienteComum)umAmbiente).getInimigos();
@@ -633,6 +685,7 @@ public class Jogo
             }
             else if(harry.getVida() <= 3 && harry.temItem("vira-tempo")){
                 harry.setVida(3);
+                System.out.println("\n****Kit de vida ajustado automaticamente****\n");
                 harry.buscarItemEspecifico("vira-tempo").decrementaItem();// devido a modalidade de usar item foi preciso atualisa-lo antes
                 harry.removerItem("vira-tempo");
             }else if(inimigos != 0){
@@ -662,11 +715,14 @@ public class Jogo
         }
     }
 
+    /**
+     * Método que exibi estatísticas e comando do jogo na abertura do jogo
+     */
     private void mostrarComandosInstrucoes(){
         int op;
         Scanner sc = new Scanner(System.in);
         System.out.print("\nINFORMAÇÕES ?\n"
-                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n>");
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n> ");
        
         
         do{
@@ -688,7 +744,7 @@ public class Jogo
                     break;
             }
        System.out.print("\nINFORMAÇÕES ?\n"
-                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n>");
+                + "1 - Exibir Estatísticas\n2 - Exibir Comandos detalhados\n3 - Historico do jogo\n4 - Iniciar Jogo \n> ");
        
         }while(op != 4  && op >= 1);
     }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author devsousa
+ * @author Wildes Sousa
  */
 /**
  * Classe Ambiente - um ambiente em um jogo adventure.
@@ -34,11 +34,10 @@ public abstract class Ambiente
 
     /**
      * Cria um ambiente com a "descricao" passada.Inicialmente, ele
- nao tem saidas. "descricao" eh algo como "uma cozinha" ou
- "
- Create a room described "description". Initially, it has
- no exits. "description" is something like "a kitchen" or
- "um jardim aberto".
+     *  nao tem saidas. "descricao" eh algo como "uma cozinha" ou"
+     * Create a room described "description". Initially, it has
+     * no exits. "description" is something like "a kitchen" or"um jardim aberto".
+     * 
      * @param descricao A descricao do ambiente.
      * @param id
      */
@@ -48,11 +47,18 @@ public abstract class Ambiente
         this.id = id;
         saidas = new HashMap<>();
     }
-    
+    /**
+     * Método responsavél por retornar as saídas possiveis do ambiente
+     * @param direcao
+     * @return se há saida retorna a referencia do ambiente apontado, caso não haja retorna <null>
+     */
     protected Ambiente getAmbiente(String direcao){
         return saidas.get(direcao);
     }    
-
+    /**
+     * Método responsavel por identificar um ambiente expecifico
+     * @return String - com ID do ambiente
+     */
     public String getId() {
         return id;
     }
@@ -75,20 +81,28 @@ public abstract class Ambiente
         return descricao;
     }
 
+    /**
+     * Método sobrescrito da classe Object
+     * @return retorna uma descricao do ambiente
+     */
     @Override
     public String toString() {
         return "\nVocê está " + getDescricao() + ", id: " + getId() + '\n';
     }
-    
-    
-
+    /**
+     * Método responsavel por exibir as saidas do ambiente
+     * @return 
+     */
     protected String getSaidas(){
         String textoSaida = " ";
         for(String direcao : saidas.keySet()){
             textoSaida += direcao + " ";
         }
         return textoSaida;
-    }
+    }/**
+     * 
+     * @return retorna uma lista de ambientes 
+     */
     protected ArrayList<Ambiente> getAmbiente(){
         return new ArrayList<>(saidas.values());
     }

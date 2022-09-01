@@ -2,8 +2,10 @@
 package edicaodojogozuul.model;
 
 /**
+ * Esta classe herda de Ambiente
+ * denominado ambiente especial e nela que esta a fase final do jogo
  *
- * @author devsousa
+ * @author Wildes Sousa
  */
 public class AmbienteEspecial extends Ambiente {
     private int vidaValdemor; 
@@ -13,6 +15,10 @@ public class AmbienteEspecial extends Ambiente {
                
     }
 
+    /**
+     * 
+     * @return vida_valdemor
+     */
     public int getVidaValdemor() {
         return vidaValdemor;
     }
