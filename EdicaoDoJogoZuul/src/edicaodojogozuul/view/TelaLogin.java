@@ -39,7 +39,6 @@ public class TelaLogin {
         janela.setSize(400, 300);
         //janela.setLayout(new FlowLayout()); // Eixo horizontal
         janela.setLayout(new BoxLayout(janela.getContentPane(),BoxLayout.Y_AXIS));
-        lblSenha.setForeground(new java.awt.Color(0, 0, 255));
         
         janela.add(lblLogin);
         janela.add(txtLogin);
