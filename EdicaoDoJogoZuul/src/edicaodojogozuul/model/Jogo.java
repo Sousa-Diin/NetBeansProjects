@@ -180,7 +180,7 @@ public class Jogo
      * Exibe as Boas Vindas e
      * Imprime a mensagem de abertura para o jogador.
      */
-    private void imprimirBoasVindas()
+    public void imprimirBoasVindas()
     {
         int tot_inimigos = AmbienteComum.getTotInimigos();
         System.out.println();
@@ -204,7 +204,7 @@ public class Jogo
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
-    private boolean processarComando(Comando comando) 
+    public boolean processarComando(Comando comando) 
     {
         boolean querSair = false;
 
@@ -256,7 +256,7 @@ public class Jogo
     /**
      * @return - String de tudo que há no abiente
      */
-    private void observar(){
+    public void observar(){
          
         proximoAmbiente = ambienteAtual;
         // usar metodo instaceo
@@ -303,7 +303,7 @@ public class Jogo
     /**
      * Mostra a localizacão atual do ambiente
      */
-    private void imprimirLocalizacaoAtual(){
+    public void imprimirLocalizacaoAtual(){
         if(valdemor_derrotado){
             if(ambienteAtual instanceof AmbienteNeutro){
                 if(((AmbienteNeutro)ambienteAtual).getId().equals("anq")){
@@ -324,7 +324,7 @@ public class Jogo
      * Aqui nos imprimimos algo bobo e enigmatico e a lista de 
      * palavras de comando
      */
-    private void imprimirAjuda() 
+    public void imprimirAjuda() 
     {
         System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
         System.out.println("por hogwarts.");
@@ -433,7 +433,7 @@ public class Jogo
      * @param lugar
      * @return Ambiente
      */
-    public Ambiente identificaCameraSecreta(Ambiente lugar){//ERRO #19
+    private Ambiente identificaCameraSecreta(Ambiente lugar){//ERRO #19
         if(lugar instanceof AmbienteEspecial){
             System.out.println(":WARNING: Você chegou na Câmera Secreta");
             if(harry.temVarinha()){
@@ -587,7 +587,7 @@ public class Jogo
      * e tem a varinha o mesmo deixa o item que por sua vez e guardado na mochila 
      * do jogador
      */
-    private void pegarVarinha(){
+    public void pegarVarinha(){
         if(ambienteAtual.getId().equals("ac")){
             if(((AmbienteComum)ambienteAtual).getVarinha()){
                 harry.pegarVarinha(!((AmbienteComum)ambienteAtual).deixarVarinha());

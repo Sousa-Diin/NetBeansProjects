@@ -1,7 +1,8 @@
 
 package edicaodojogozuul.view;
 
-import edicaodojogozuul.model.Instrucoes;
+import edicaodojogozuul.model.Comando;
+import edicaodojogozuul.model.Jogo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,7 +30,10 @@ import javax.swing.JTextField;
  *
  * @author Wildes Sousa
  */
-public class InterfaceDoJogo {
+public class InterfaceDoJogo implements Interacao{
+    
+    private Jogo jogo;
+       
     
     private final JFrame telaPrincipal;
     
@@ -63,6 +67,8 @@ public class InterfaceDoJogo {
     
    
     public InterfaceDoJogo(){
+        
+        this.jogo = jogo;
         telaPrincipal = new JFrame("LABIRINTO DE HOGWARTS");
         telaPrincipal.setSize(1060, 690);
         telaPrincipal.setMaximumSize(new Dimension(1060,690));
@@ -74,18 +80,19 @@ public class InterfaceDoJogo {
        
         rotuloDisplay = new JLabel("DISPLAY");
         rotuloComandos = new JLabel("COMANDOS");
-        //Tirar os parametros qnd for compilar em uma IDE
+        /*Tirar os parametros qnd for compilar em uma IDE
         irSul = new JButton("Sul");
         irNorte = new JButton("Norte");
         irOeste = new JButton("Oeste");
         irNordeste = new JButton("Nordeste");
-        irLeste = new JButton("Leste");/*
+        irLeste = new JButton("Leste");*/
         irSul = new JButton();
         irNorte = new JButton();
         irOeste = new JButton();
         irNordeste = new JButton();
-        irLeste = new JButton();*/
+        irLeste = new JButton();
         lutar = new JButton("L");
+        
        
         montarMenu();
         montarTela();
@@ -97,9 +104,9 @@ public class InterfaceDoJogo {
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-
+                    
                     formataTexto(rotuloDicas, "Kit vidas [10]");
-
+                    
                 }
             }
         );
@@ -115,7 +122,11 @@ public class InterfaceDoJogo {
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+                    Comando comando;
+                                         
+                        
                     formataTexto(rotuloDicas, "opção indisponivel");
+                   
                 }
             }
         );
@@ -123,6 +134,7 @@ public class InterfaceDoJogo {
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+                   
                     recebeComando.setText("IR NORTE");
                 }
             }
@@ -201,7 +213,7 @@ public class InterfaceDoJogo {
         panelCenas = new JPanel();
         panelCenas.setLayout(new FlowLayout());
         //Apenas em IDE 
-        //rotuloImageCenas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/poterOutsideCastell.jpeg")));
+        rotuloImageCenas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/poterOutsideCastell.jpeg")));
         panelCenas.add(rotuloImageCenas);
         telaPrincipal.add(panelCenas, BorderLayout.CENTER);
         
@@ -216,13 +228,13 @@ public class InterfaceDoJogo {
         rotuloComandos.setForeground(new java.awt.Color(255, 255, 255));
         rotuloComandos.setFont(new java.awt.Font("SansSerif", 1, 24));
         
-        /* Descomentar essa as cincos linhas seguinte qnd for complilar em uma IDE
+        //Descomentar essa as cincos linhas seguinte qnd for complilar em uma IDE
         irNorte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/arrow_up.png")));
         irNordeste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/arrow_right.png")));
         irOeste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/arrow_left.png")));
         irLeste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/arrow_right.png")));
         irSul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edicaodojogozuul/img/arrow_down.png")));
-        */
+        
         panelCmdSetaUp.setLayout(new GridLayout(1, 3));
         panelCmdSetaCenter.setLayout(new GridLayout(1, 3));
         panelCmdSetaDown.setLayout(new GridLayout(1, 3));
@@ -289,5 +301,40 @@ public class InterfaceDoJogo {
     
     public void exibir(){
         telaPrincipal.setVisible(true);
+    }
+
+    @Override
+    public void play() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void observar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void coletar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void lutar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void irAmbiente() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void acessorios() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void instrucoes() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
